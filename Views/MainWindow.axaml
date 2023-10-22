@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Maximatron.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:Maximatron"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Maximatron.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Maximatron"
+        Background="#d9d9d9">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+	
+	<Grid Name="MainGrid" ColumnDefinitions="1.5*, 8.5*" RowDefinitions="*" VerticalAlignment="Stretch" ZIndex="999999">
+		
+		<StackPanel Grid.Column="0" Name="Hierachy" Background="#323232" ZIndex="-1">
+		    <Button Click="CreateNewNote">Run the example</Button>
+		</StackPanel>
+		
+		<StackPanel Name="BoardView" Grid.Column="1">			
+		<!--
+		    LE NOTELAYOUT EST UNIQUEMENT POUR LE BOARD VIEW 
+			/!\ NE RIEN METTRE DEDANS /!\
+		-->
+		</StackPanel>
+		
+	</Grid>
+	
+
+
+
+
+		
+</Window>
