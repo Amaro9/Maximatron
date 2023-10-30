@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Maximatron.ViewModels;
 using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Maximatron
 {

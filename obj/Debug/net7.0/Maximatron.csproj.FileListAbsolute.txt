@@ -20,14 +20,20 @@ E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Diagnostics.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Fonts.Inter.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.FreeDesktop.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Native.dll
-E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.ReactiveUI.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Remote.Protocol.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Skia.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Themes.Fluent.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Themes.Simple.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Win32.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.X11.dll
-E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\DynamicData.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.Custom.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.DragAndDrop.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.Draggable.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.Events.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.Reactive.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactions.Responsive.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Xaml.Interactivity.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\HarfBuzzSharp.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\MicroCom.Runtime.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Microsoft.CodeAnalysis.dll
@@ -35,9 +41,7 @@ E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSha
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Microsoft.CodeAnalysis.CSharp.Scripting.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Microsoft.CodeAnalysis.Scripting.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
-E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\ReactiveUI.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\SkiaSharp.dll
-E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Splat.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\System.Drawing.Common.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\System.IO.Pipelines.dll
 E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\System.Reactive.dll
@@ -134,3 +138,4 @@ E:\Projets\C#\Maximatron\Maximatron\obj\Debug\net7.0\Maximatron.pdb
 E:\Projets\C#\Maximatron\Maximatron\obj\Debug\net7.0\Maximatron.csproj.CopyComplete
 E:\Projets\C#\Maximatron\Maximatron\obj\Debug\net7.0\Maximatron.genruntimeconfig.cache
 E:\Projets\C#\Maximatron\Maximatron\obj\Debug\net7.0\ref\Maximatron.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\CommunityToolkit.Mvvm.dll

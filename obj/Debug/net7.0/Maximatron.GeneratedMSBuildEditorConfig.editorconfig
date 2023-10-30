@@ -18,8 +18,14 @@ build_property.ProjectDir = E:\Projets\C#\Maximatron\Maximatron\
 [E:/Projets/C\#/Maximatron/Maximatron/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[E:/Projets/C\#/Maximatron/Maximatron/NoteControl.axaml]
+[E:/Projets/C\#/Maximatron/Maximatron/Controls/NewBlocControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[E:/Projets/C\#/Maximatron/Maximatron/Controls/NoteControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [E:/Projets/C\#/Maximatron/Maximatron/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[E:/Projets/C\#/Maximatron/Maximatron/Views/PageView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

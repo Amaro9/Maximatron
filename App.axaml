@@ -11,5 +11,12 @@
   
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="/Controls/NewBlocControl.axaml"></StyleInclude>
     </Application.Styles>
+             
+    <Application.Resources>
+        <SolidColorBrush x:Key="DarkGrey">#323232</SolidColorBrush>
+        <SolidColorBrush x:Key="Pink">#ee87f9</SolidColorBrush>
+
+    </Application.Resources>
 </Application>

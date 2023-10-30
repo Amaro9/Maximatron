@@ -1,0 +1,190 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Maximatron.ViewModels"
+        xmlns:controls="clr-namespace:Maximatron.Controls"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="730"
+        x:Class="Maximatron.PageView"
+        x:DataType="vm:PageViewModel"
+        
+		MinWidth="630" MinHeight="470"
+        Title="PageView"
+		Background="White"
+		TransparencyLevelHint="AcrylicBlur"
+		ExtendClientAreaToDecorationsHint="True">
+
+	<Window.Styles>
+		
+		<!-- Style pour les blocs de text -->
+		<Style Selector="TextBox.Test">
+			<Setter Property="Background" Value="WhiteSmoke"/>
+			<Setter Property="Margin" Value="10"/>
+			<Setter Property="CornerRadius" Value="10"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>
+			<Setter Property="BorderThickness" Value="1"></Setter>
+			<Setter Property="Foreground" Value="Black"></Setter>
+			<Setter Property="CaretBrush" Value="Black"></Setter>
+		</Style>
+		
+		<Style Selector="TextBox.Test:focus /template/ Border">
+			<Setter Property="Background" Value="WhiteSmoke"/>
+			<Setter Property="CornerRadius" Value="10"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>
+		</Style>
+		
+		<Style Selector="TextBox.Test:pointerover /template/ Border">
+			<Setter Property="Background" Value="WhiteSmoke"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>		
+			<Setter Property="CornerRadius" Value="10"/>
+		</Style>
+		
+		<!-- style pour le add btn -->
+		<Style Selector="Button.NewUserBloc">
+			<Setter Property="Background" Value="WhiteSmoke"></Setter> 
+			<Setter Property="Foreground" Value="Black"></Setter>
+			<Setter Property="CornerRadius" Value="0"/>
+			
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0:0:1"></BrushTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		<Style Selector="Button.NewUserBloc:pointerover /template/ ContentPresenter" >
+			<Setter Property="Background" Value="{DynamicResource Pink}"></Setter> 
+			<Setter Property="CornerRadius" Value="0"/>
+		</Style>
+		
+		<Style Selector="Button.NewUserBloc:pressed /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource Pink}" ></Setter> 
+			<Setter Property="CornerRadius" Value="0"/>
+		</Style>
+		
+		<!-- New Blocs Stack Panel -->
+		<Style Selector="StackPanel.NewBloc">
+			<Setter Property="Height" Value="0"></Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<DoubleTransition Property="Height" Duration="0:0:0.1" Easing="QuadraticEaseIn"></DoubleTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		
+		<Style Selector="StackPanel.NewBloc.Open">
+			<Setter Property="Height" Value="600"></Setter>
+		</Style>
+		
+		<!-- New Blocs Items -->
+		<Style Selector="controls|NewBlocControl.Item">
+			<Setter Property="Opacity" Value="0"></Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="QuadraticEaseIn"></DoubleTransition>
+					<BrushTransition Property="Background" Duration="0:0:0.1" Easing="QuadraticEaseIn"></BrushTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		<Style Selector="controls|NewBlocControl.Item.Open">
+			<Setter Property="Opacity" Value="1"></Setter>
+		</Style>
+		
+		<Style Selector="controls|NewBlocControl.Item:pointerover">
+			<Setter Property="Background" Value="Red"></Setter>
+		</Style>
+
+
+	</Window.Styles>
+
+	<Grid RowDefinitions="auto, *">
+		
+		
+		
+		<!-- Title bar -->
+		<Grid Grid.Row="0" ColumnDefinitions="Auto,*" Height="30" IsHitTestVisible="False" Background="{DynamicResource DarkGrey}">
+			<Image Grid.Column="0" VerticalAlignment="Center" Source="/Assets/avalonia-logo.ico" Width="18" Margin="12,0,12,0"></Image>
+			<TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12" Foreground="White">MAXIMATRON</TextBlock>
+		</Grid>
+		
+		<Grid Grid.Row="1" ColumnDefinitions="300, *">
+
+			<!-- HIERARCHY -->
+			<Grid Background="{DynamicResource DarkGrey}" Grid.Column="0"
+				  RowDefinitions="Auto, Auto, *">
+
+				<Label Grid.Row="0" HorizontalAlignment="Center" Margin="5,10,5,0"
+						FontWeight="Normal" Foreground="WhiteSmoke" FontSize="32">HIERARCHY</Label>
+
+				<!-- Path -->
+				<TextBlock Grid.Row="1" Margin="10,30"
+					TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="14">
+					> Home > ...
+				</TextBlock>
+
+				<!-- User Pages -->
+				<StackPanel Grid.Row="2" Margin="15,40,0,0">
+
+					<!-- User Pages templates -->
+					<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+						> Random page
+					</TextBlock>
+					<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+						> Random page
+					</TextBlock>
+					<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+						> Random page
+					</TextBlock>
+					<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+						> Random page
+					</TextBlock>
+					<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+						> Random page
+					</TextBlock>
+					<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+						> Random page
+					</TextBlock>
+				</StackPanel>
+			</Grid>
+			
+			<!-- VIEW -->
+			<Grid Grid.Column="1" Background="{DynamicResource DarkGrey}"
+			      RowDefinitions="Auto, *">
+
+				<!-- Top Barre -->
+				<Grid Grid.Row="0" Height="40" ZIndex="1" Margin="0,10,0,0"
+				      
+				      ColumnDefinitions="*, 60">
+					<StackPanel Grid.Column="1">
+						
+						<Button Classes="NewUserBloc" Command="{Binding NewBlocButtonPressedCommand}">NEW</Button>
+						
+						<StackPanel Width="210" Background="{DynamicResource DarkGrey}" HorizontalAlignment="Right" Spacing="10"
+						            Classes="NewBloc"
+						            Classes.Open="{Binding IsNewBlocPopupVisible}"
+						            Margin="0,0,0,20">
+							<controls:NewBlocControl Classes="Item" Classes.Open="{Binding IsNewBlocPopupVisible}"/>
+							<controls:NewBlocControl Classes="Item" Classes.Open="{Binding IsNewBlocPopupVisible}"/>
+							<controls:NewBlocControl Classes="Item" Classes.Open="{Binding IsNewBlocPopupVisible}"/>
+							<controls:NewBlocControl Classes="Item" Classes.Open="{Binding IsNewBlocPopupVisible}"/>
+							<controls:NewBlocControl Classes="Item" Classes.Open="{Binding IsNewBlocPopupVisible}"/>
+
+						</StackPanel>
+					</StackPanel>
+				</Grid>
+				
+				<!-- User Page View -->
+				<StackPanel x:Name="UserViewStackPanel" Grid.Row="1" Background="White">
+					<TextBox Classes="Test" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
+					<TextBox Classes="Test" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
+					<TextBox Classes="Test" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />	
+				
+					<TextBox Classes="Test" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
+					<TextBox Classes="Test" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
+				</StackPanel>
+
+			</Grid>
+		</Grid>
+	</Grid>
+	
+
+</Window>

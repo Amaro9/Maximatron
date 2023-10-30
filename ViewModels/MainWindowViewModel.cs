@@ -1,14 +1,8 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Media;
-using ReactiveUI;
-using System;
-using System.Diagnostics;
-using System.Reactive;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Maximatron.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ObservableObject
     {
     }
 }
