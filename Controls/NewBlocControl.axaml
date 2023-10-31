@@ -1,12 +1,20 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Maximatron.Controls">
+        xmlns:controls="using:Maximatron.Controls"
+        xmlns:vm="using:Maximatron.ViewModels"
+        xmlns:maximatron="clr-namespace:Maximatron"
+        x:DataType="vm:NewControlBlockModel">
     <Design.PreviewWith>
-        <controls:NewBlocControl/>
+        <StackPanel>
+            <controls:UserInteractable/>
+
+            
+        </StackPanel>
     </Design.PreviewWith>
 
-    <Style Selector="controls|NewBlocControl">
+    <Style Selector="controls|UserInteractable">
         <!-- Set Defaults -->
+        <!--Interactible-->
         <Setter Property="Background" Value="{DynamicResource DarkGrey}"></Setter>
         <Setter Property="Height" Value="50"></Setter>
         <Setter Property="Width" Value="200"></Setter>
@@ -14,18 +22,20 @@
             <ControlTemplate>
                 <Button>
                     <Border Background="{TemplateBinding Background}" 
-                            BorderBrush="{DynamicResource Pink}"
+                            BorderBrush="{DynamicResource Secondary}"
                             BorderThickness="2"
                             Margin="5" 
                             HorizontalAlignment="Center"
                             Height="{TemplateBinding Height}"
                             Width="{TemplateBinding Width}">
-                        <Grid ColumnDefinitions="0.5*,.6*,*">
+                        <Grid ColumnDefinitions="0.5*,.1*,2*" HorizontalAlignment="Left">
                             <Image Grid.Column="0" Source="../Assets/avalonia-logo.ico"></Image>
                             <Rectangle Grid.Column="1" Height="{TemplateBinding Height}"
-                                       Width="2" Fill="{DynamicResource Pink}"
+                                       Width="2" Fill="{DynamicResource Secondary}"
                                        Margin="10,0,10,0"/>
-                            <Label Grid.Column="2" VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center">coucou</Label>
+                            <Label Grid.Column="2" 
+                                   Content="{Binding TextContent, RelativeSource={RelativeSource TemplatedParent}}"
+                                   VerticalAlignment="Center" Foreground="White" HorizontalAlignment="Center"/>
                         </Grid>
                     </Border>
                     
@@ -33,4 +43,6 @@
             </ControlTemplate>
         </Setter>
     </Style>
+    
+    
 </Styles>

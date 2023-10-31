@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Maximatron.App"
              xmlns:local="using:Maximatron"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
@@ -11,11 +11,15 @@
   
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="/Controls/NewBlocControl.axaml"></StyleInclude>
+        <StyleInclude Source="/Controls/NewBlocControl.axaml"></StyleInclude> 
+        <StyleInclude Source="/Controls/UserObject.axaml"></StyleInclude>
+        <StyleInclude Source="/Styles/PageViewStyles.axaml"/>
     </Application.Styles>
              
     <Application.Resources>
-        <SolidColorBrush x:Key="DarkGrey">#323232</SolidColorBrush>
+        <SolidColorBrush x:Key="DarkGrey">#323232</SolidColorBrush> 
+        <SolidColorBrush x:Key="LightGrey">#585858</SolidColorBrush>
+        <SolidColorBrush x:Key="Secondary">#ffe7c3</SolidColorBrush>
         <SolidColorBrush x:Key="Pink">#ee87f9</SolidColorBrush>
 
     </Application.Resources>

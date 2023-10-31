@@ -1,0 +1,111 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Maximatron.Controls">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+	
+	
+    <!-- Add Styles Here -->
+    <!-- Style pour les blocs de text -->
+		<Style Selector="TextBox.Field">
+			<Setter Property="Background" Value="{DynamicResource DarkGrey}"/>
+			<Setter Property="Margin" Value="10"/>
+			<Setter Property="CornerRadius" Value="10"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>
+			<Setter Property="BorderThickness" Value="1"></Setter>
+
+			
+		</Style>
+		
+		<Style Selector="TextBox.Field:focus /template/ Border">
+			<Setter Property="Background" Value="{DynamicResource DarkGrey}"/>
+			<Setter Property="CornerRadius" Value="10"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>
+		</Style>
+		
+		<Style Selector="TextBox.Field:pointerover /template/ Border">
+			<Setter Property="Background" Value="{DynamicResource DarkGrey}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>		
+			<Setter Property="CornerRadius" Value="10"/>
+		</Style>
+		
+		<!-- style pour le add btn -->
+		<Style Selector="Button.NewUserBloc">
+			<Setter Property="Background" Value="WhiteSmoke"></Setter> 
+			<Setter Property="Foreground" Value="Black"></Setter>
+			<Setter Property="CornerRadius" Value="0"/>
+			
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="Background" Duration="0:0:1"></BrushTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		<Style Selector="Button.NewUserBloc:pointerover /template/ ContentPresenter" >
+			<Setter Property="Background" Value="{DynamicResource Secondary}"></Setter> 
+			<Setter Property="CornerRadius" Value="0"/>
+		</Style>
+		
+		<Style Selector="Button.NewUserBloc:pressed /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource Secondary}" ></Setter> 
+			<Setter Property="CornerRadius" Value="0"/>
+		</Style>
+		
+		<!-- New Blocs Stack Panel -->
+		<Style Selector="StackPanel.NewBloc">
+			<Setter Property="Height" Value="0"></Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<DoubleTransition Property="Height" Duration="0:0:0.1" Easing="QuadraticEaseIn"></DoubleTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		
+		<Style Selector="StackPanel.NewBloc.Open">
+			<Setter Property="Height" Value="430"></Setter>
+		</Style>
+		
+		<!-- New Blocs Items -->
+		<Style Selector="controls|UserInteractable.Item">
+			<Setter Property="Opacity" Value="0"></Setter>
+			<Setter Property="IsEnabled" Value="False"></Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="QuadraticEaseIn"></DoubleTransition>
+					<BrushTransition Property="Background" Duration="0:0:0.1" Easing="QuadraticEaseIn"></BrushTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		<Style Selector="controls|UserInteractable.Item.Open">
+			<Setter Property="Opacity" Value="1"></Setter>
+			<Setter Property="IsEnabled" Value="True"></Setter>
+		</Style>
+		
+		<Style Selector="controls|UserInteractable.Item:pointerover">
+			<Setter Property="Background" Value="{DynamicResource LightGrey}"></Setter>
+		</Style>
+    
+    <Style Selector="CheckBox.Check:checked /template/ Path#checkMark">
+	    <Setter Property="Fill" Value="Red" />
+	    
+    </Style>
+    
+    <Style Selector="CheckBox.CustomCheckBox">
+	    <Setter Property="Foreground" Value="Blue"/>
+	    <Setter Property="Template">
+		    <ControlTemplate>
+			    <Grid>
+				    <!-- Your custom checkbox appearance goes here -->
+				    <ContentPresenter Name="PART_ContentPresenter" />
+			    </Grid>
+		    </ControlTemplate>
+	    </Setter>
+    </Style>
+
+</Styles>
+
+
+

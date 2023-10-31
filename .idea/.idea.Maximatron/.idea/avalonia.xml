@@ -4,8 +4,15 @@
     <option name="projectPerEditor">
       <map>
         <entry key="App.axaml" value="Maximatron.csproj" />
+        <entry key="Controls/BlockControl.axaml" value="Maximatron.csproj" />
+        <entry key="Controls/CheckBoxControl.axaml" value="Maximatron.csproj" />
+        <entry key="Controls/NewBlocControl.axaml" value="Maximatron.csproj" />
         <entry key="Controls/NewBlocItem.axaml" value="Maximatron.csproj" />
         <entry key="Controls/NoteControl.axaml" value="Maximatron.csproj" />
+        <entry key="Controls/UserObject.axaml" value="Maximatron.csproj" />
+        <entry key="Styles/PageViewStyles.axaml" value="Maximatron.csproj" />
+        <entry key="ViewModels/dzd.axaml" value="Maximatron.csproj" />
+        <entry key="ViewModels/fezfz.axaml" value="Maximatron.csproj" />
         <entry key="Views/MainWindow.axaml" value="Maximatron.csproj" />
         <entry key="Views/PageView.axaml" value="Maximatron.csproj" />
       </map>

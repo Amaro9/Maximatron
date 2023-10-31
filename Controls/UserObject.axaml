@@ -1,0 +1,83 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Maximatron.Controls">
+    <Design.PreviewWith>
+        <StackPanel Spacing="30">
+            <controls:UserObject Classes="BasicList">
+                <StackPanel>
+                    <CheckBox >oui</CheckBox>
+                    <CheckBox>oui</CheckBox>
+                    <CheckBox>oui</CheckBox>
+                </StackPanel>
+            </controls:UserObject>
+            
+            <controls:UserObject Classes="BasicField"></controls:UserObject>
+            
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|UserObject">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter Content="{TemplateBinding Content}"/>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|UserObject.BasicField">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource DarkGrey}"
+                        BorderBrush="{DynamicResource Secondary}"
+                        BorderThickness="10,0,0,0"
+                        Margin="20"
+                        CornerRadius="0,0,20,0">
+                    <TextBox Classes="Field" BorderThickness="0" Watermark="Enter text..."
+                             AcceptsReturn="True" AcceptsTab="True"
+                             TextWrapping="Wrap" ContextMenu="{TemplateBinding ContextMenuTest}">
+                        
+                    </TextBox>          
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|UserObject.BasicList">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border MinHeight="100" MinWidth="200" 
+                        Background="{DynamicResource DarkGrey}" Padding="20" Margin="20"
+                        BorderBrush="{DynamicResource Secondary}" BorderThickness="10,0,0,0" 
+                        ContextMenu="{TemplateBinding ContextMenuTest}"
+                        CornerRadius="0,0,20,0">
+                    <StackPanel>
+                        <!--Card Title-->
+                        <Label Margin="0,0,0,7" Padding="0"
+                               HorizontalAlignment="Left" 
+                               FontSize="28"
+                               FontWeight="200"
+                               Content="LIST"/>
+                        <!--Separation-->
+                        <Rectangle Height="2" Fill="White" Margin="0,0,0,15"></Rectangle>
+                        
+                        <!--Content-->
+                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
+    <Style Selector="controls|UserObject.BasicCheckBox">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="Red" Padding="15,5">
+                    <CheckBox>Something Important :)</CheckBox>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>
