@@ -86,10 +86,12 @@
 								<!--bouton pour ajouter des controls-->
 								<controls:UserInteractable Classes="Item" TextContent="FIELD"
 								                         Classes.Open="{Binding IsNewBlocPopupVisible}" 
-								                         Click="AddNewTextField"/>
+								                         Click="AddUserObject"/>
 								<controls:UserInteractable Classes="Item" TextContent="LIST"
 								                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
-								                           Click="AddNewList"/>
+								                           Click="AddUserObject"
+								                           Tag="BasicList"/>
+								
 						</StackPanel>
 					</StackPanel>
 				</Grid>

@@ -17,4 +17,6 @@ public partial class PageViewModel : ViewModelBase
         NewBlocBtnTitle = IsNewBlocPopupVisible ? "X" : "=";
     }
     
+    
+    
 }

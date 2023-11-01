@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -14,8 +15,31 @@ public partial class PageView : Window
         InitializeComponent();
     }
 
+    private void AddUserObject(object? sender, RoutedEventArgs e)
+    {
+        // Check si le sender est valid
+        if (sender is not UserInteractable)
+            throw new Exception($"[ERROR] : {sender} is not a UserInteractable !");
 
-    private void AddNewTextField(object? sender, RoutedEventArgs e)
+        UserInteractable control = (UserInteractable)sender;
+        // On Test le TextContent pour savoir quel USerControl il faudra spawn
+        switch (control.TextContent)
+        {
+            case "FIELD":
+                UserViewStackPanel.Children.Add(CreateTextField());
+                break;
+            case "LIST":
+                UserViewStackPanel.Children.Add(CreateList());
+                break;
+            default:
+                // On a pas trouver de type valid
+                throw new Exception($"[ERROR] : {control.TextContent} is not implemented in AddUserControl switch !");
+        }
+        
+    }
+
+
+    private UserObject CreateTextField()
     {
         UserObject userObject = new UserObject()
         {
@@ -45,15 +69,21 @@ public partial class PageView : Window
         removeMenuItem.PointerPressed += RemoveControl;
         removeMenuItem.Background = Brushes.Brown;
         contextMenu.Items.Add(removeMenuItem);
+        
+        // Event Test
+        MenuItem test = new MenuItem { Header = "[In Editor] Get Template Control" };
+        test.PointerPressed += PrintTemplateControl;
+        contextMenu.Items.Add(test);
 
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
+        
+        
+        return userObject;
 
-        // Ajout de la text box final a un panel
-        UserViewStackPanel.Children.Add(userObject);
     }
     
-    private void AddNewList(object? sender, RoutedEventArgs e)
+    private UserObject CreateList()
     {
         UserObject userObject = new UserObject()
         {
@@ -69,24 +99,44 @@ public partial class PageView : Window
         removeMenuItem.PointerPressed += RemoveControl;
         removeMenuItem.Background = Brushes.Brown;
         contextMenu.Items.Add(removeMenuItem);
+        
+        // Event Test
+        MenuItem test = new MenuItem { Header = "[In Editor] Get Template Control" };
+        test.PointerPressed += PrintTemplateControl;
+        contextMenu.Items.Add(test);
+
 
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
-
-        // Ajout de la text box final a un panel
-        UserViewStackPanel.Children.Add(userObject);
+        
+        return userObject;
+    }
+    
+    
+    
+    
+    
+    private void PrintTemplateControl(object? sender, PointerPressedEventArgs e)
+    {
+        Console.WriteLine($"[INFO] : TemplateControl is {GetUserObject(sender).Classes[0]}");
     }
 
+
+    private void AddControlInList(object? list)
+    {
+        
+    }
     private void RemoveControl(object? sender, PointerPressedEventArgs e)
     {
         // Check si le sender est bien un control
         if (sender is not Control) return;
         
-        var textBox = GetTemplateParent(sender);
+        UserObject? userObject = GetUserObject(sender);
         
-        if (textBox != null) 
-            UserViewStackPanel.Children.Remove(textBox);
+        if (userObject != null) 
+            UserViewStackPanel.Children.Remove(userObject);
     }
+    
 
     private void PastText(object? sender, PointerPressedEventArgs e)
     {
@@ -128,18 +178,18 @@ public partial class PageView : Window
         return null;
     }
 
-    private Control? GetTemplateParent(object sender)
+    private UserObject? GetUserObject(object? sender)
     {
         if (sender is Control control)
         {
-            // on get la textBox
-            // PS : on prend 3 parents au dessus pour avoir le control 
-            var parent = (Control?)(control.Parent?.Parent?.Parent.Parent);
-            Console.WriteLine(control.TemplatedParent); 
-            return parent;
+            if (control.Parent is UserObject userObject)
+                return userObject;
 
+            return GetUserObject(control.Parent);
+                
+            
         }
-
+        Console.WriteLine($"[ERROR] : {sender} is not a control");
         return null;
     }
 }
