@@ -5,13 +5,14 @@
         <StackPanel Spacing="30">
             <controls:UserObject Classes="BasicList">
                 <StackPanel>
-                    <CheckBox >oui</CheckBox>
-                    <CheckBox>oui</CheckBox>
-                    <CheckBox>oui</CheckBox>
+                    <controls:UserObject Classes="BasicCheckBox"></controls:UserObject>
+                    <controls:UserObject Classes="BasicCheckBox"></controls:UserObject>
+                    <controls:UserObject Classes="BasicCheckBox"></controls:UserObject>
                 </StackPanel>
             </controls:UserObject>
             
             <controls:UserObject Classes="BasicField"></controls:UserObject>
+            <controls:UserObject Classes="BasicCheckBox"></controls:UserObject>
             
         </StackPanel>
     </Design.PreviewWith>
@@ -30,7 +31,7 @@
             <ControlTemplate>
                 <Border Background="{DynamicResource DarkGrey}"
                         BorderBrush="{DynamicResource Secondary}"
-                        BorderThickness="10,0,0,0"
+                        BorderThickness="10,1,1,1" 
                         Margin="20"
                         CornerRadius="0,0,20,0">
                     <TextBox Classes="Field" BorderThickness="0" Watermark="Enter text..."
@@ -49,16 +50,16 @@
             <ControlTemplate>
                 <Border MinHeight="100" MinWidth="200" 
                         Background="{DynamicResource DarkGrey}" Padding="20" Margin="20"
-                        BorderBrush="{DynamicResource Secondary}" BorderThickness="10,0,0,0" 
+                        BorderBrush="{DynamicResource Secondary}" BorderThickness="10,1,1,1" 
                         ContextMenu="{TemplateBinding ContextMenuTest}"
                         CornerRadius="0,0,20,0">
+
                     <StackPanel>
                         <!--Card Title-->
-                        <Label Margin="0,0,0,7" Padding="0"
-                               HorizontalAlignment="Left" 
-                               FontSize="28"
-                               FontWeight="200"
-                               Content="LIST"/>
+                        <TextBox Classes="Field" BorderThickness="0" Watermark="LIST"
+                                 FontSize="28" Margin="0" Padding="0"
+                                 AcceptsReturn="True" AcceptsTab="False"
+                                 TextWrapping="Wrap" ContextMenu="{TemplateBinding ContextMenuTest}"/>
                         <!--Separation-->
                         <Rectangle Height="2" Fill="White" Margin="0,0,0,15"></Rectangle>
                         
@@ -74,8 +75,15 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="Red" Padding="15,5">
-                    <CheckBox>Something Important :)</CheckBox>
+                <Border Background="{DynamicResource DarkGrey}" Margin="20,0,20,0">
+                    <CheckBox CornerRadius="0" HorizontalAlignment="Left" 
+                              Margin="10,10,0,0">
+                        <TextBox Classes="Field" BorderThickness="0" Watermark="Something important"
+                                 FontSize="15" Margin="0" Padding="0"
+                                 AcceptsReturn="True" AcceptsTab="False"
+                                 VerticalAlignment="Center"
+                                 TextWrapping="Wrap" ContextMenu="{TemplateBinding ContextMenuTest}"/>
+                    </CheckBox>
                 </Border>
             </ControlTemplate>
         </Setter>

@@ -86,22 +86,31 @@
 								<!--bouton pour ajouter des controls-->
 								<controls:UserInteractable Classes="Item" TextContent="FIELD"
 								                         Classes.Open="{Binding IsNewBlocPopupVisible}" 
-								                         Click="AddUserObject"/>
+								                         Click="AddUserObject"
+								                         Tag="FIELD"/>
 								<controls:UserInteractable Classes="Item" TextContent="LIST"
 								                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
 								                           Click="AddUserObject"
-								                           Tag="BasicList"/>
+								                           Tag="LIST"/>
+								<controls:UserInteractable Classes="Item" TextContent="CHECKBOX"
+								                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
+								                           Click="AddUserObject"
+								                           Tag="CHECKBOX"/>
 								
 						</StackPanel>
 					</StackPanel>
 				</Grid>
 				
 				<!-- User Page View -->
-				<StackPanel x:Name="UserViewStackPanel" Grid.Row="1" Background="White" Margin="0,20,0,0">
-					<!-- PS : ne rien ajouter c'est des trucs ajouter dynamiquement-->
-					<!-- RE-PS : apres si c'est pour des test c'est ok tkt-->
 
-				</StackPanel>
+				<ScrollViewer Grid.Row="1" Background="White"
+				              VerticalAlignment="Stretch"
+				              VerticalScrollBarVisibility="Visible">
+					<StackPanel x:Name="UserViewStackPanel">
+						<!-- Les element sont ajouter dynamiquement par le user-->
+						<!-- NE RIEN METTRE ICI SAUF DANS DES TEST tkt :) -->
+					</StackPanel>
+				</ScrollViewer>
 				
 
 			</Grid>

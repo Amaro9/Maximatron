@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Maximatron.Controls;
+using Maximatron.ViewModels;
 
 namespace Maximatron;
 
@@ -22,26 +23,29 @@ public partial class PageView : Window
             throw new Exception($"[ERROR] : {sender} is not a UserInteractable !");
 
         UserInteractable control = (UserInteractable)sender;
-        // On Test le TextContent pour savoir quel USerControl il faudra spawn
-        switch (control.TextContent)
+        UserViewStackPanel.Children.Add(GetSpawnObject(control));
+    }
+
+    private Control GetSpawnObject(Control control)
+    {
+        switch (control.Tag)
         {
             case "FIELD":
-                UserViewStackPanel.Children.Add(CreateTextField());
-                break;
+                return CreateTextField();
             case "LIST":
-                UserViewStackPanel.Children.Add(CreateList());
-                break;
+                return CreateList();
+            case "CHECKBOX":
+                return CreateCheckBox();
             default:
                 // On a pas trouver de type valid
-                throw new Exception($"[ERROR] : {control.TextContent} is not implemented in AddUserControl switch !");
+                throw new Exception($"[ERROR] : {control.Tag} is not implemented in GetSpawnObject switch !");
         }
-        
     }
 
 
     private UserObject CreateTextField()
     {
-        UserObject userObject = new UserObject()
+        UserObject userObject = new UserObject
         {
             Classes = { "BasicField" }
         };
@@ -78,21 +82,41 @@ public partial class PageView : Window
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
         
-        
+        // On return le userObject fini
         return userObject;
 
     }
     
     private UserObject CreateList()
     {
-        UserObject userObject = new UserObject()
+        UserObject userObject = new UserObject
         {
             Classes = { "BasicList" }
         };
 
+        StackPanel stackPanel = new StackPanel();
+        userObject.Content = stackPanel;
+
         // Creation du context menu (le truc quand tu fais click droit)
         ContextMenu contextMenu = new ContextMenu();
-        contextMenu.Background = Brushes.Brown;
+
+        // Event Add Field to list
+        MenuItem addField = new MenuItem { Header = "Add Text Field" };
+        addField.Tag = "FIELD";
+        addField.PointerPressed += AddControlInList;
+        contextMenu.Items.Add(addField);
+        
+        // Event Add Field to list
+        MenuItem addList = new MenuItem { Header = "Add List" };
+        addList.Tag = "LIST";
+        addList.PointerPressed += AddControlInList;
+        contextMenu.Items.Add(addList);
+        
+        // Event Add Field to list
+        MenuItem addCheckBox = new MenuItem { Header = "Add CheckBox" };
+        addCheckBox.Tag = "CHECKBOX";
+        addCheckBox.PointerPressed += AddControlInList;
+        contextMenu.Items.Add(addCheckBox);
         
         // Event Remove
         MenuItem removeMenuItem = new MenuItem { Header = "Remove" };
@@ -109,32 +133,79 @@ public partial class PageView : Window
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
         
+        // On return le userObject fini
+        return userObject;
+    }
+    private UserObject CreateCheckBox()
+    {
+        UserObject userObject = new UserObject
+        {
+            Classes = { "BasicCheckBox" }
+        };
+        
+        // Creation du context menu (le truc quand tu fais click droit)
+        ContextMenu contextMenu = new ContextMenu();
+        
+        // Event Remove
+        MenuItem removeMenuItem = new MenuItem { Header = "Remove" };
+        removeMenuItem.PointerPressed += RemoveControl;
+        removeMenuItem.Background = Brushes.Brown;
+        contextMenu.Items.Add(removeMenuItem);
+        
+        // Event Test
+        MenuItem test = new MenuItem { Header = "[In Editor] Get Template Control" };
+        test.PointerPressed += PrintTemplateControl;
+        contextMenu.Items.Add(test);
+
+
+        // On assigne le context menu a la textbox
+        userObject.ContextMenuTest = contextMenu;
+        
+        // On return le userObject fini
         return userObject;
     }
     
     
     
     
-    
     private void PrintTemplateControl(object? sender, PointerPressedEventArgs e)
     {
-        Console.WriteLine($"[INFO] : TemplateControl is {GetUserObject(sender).Classes[0]}");
+        Console.WriteLine($"[INFO] : TemplateControl is {GetUserObject(sender)?.Classes[0]}");
     }
 
 
-    private void AddControlInList(object? list)
+    private void AddControlInList(object? sender, PointerPressedEventArgs e)
     {
+        if (sender is not Control control) return;
         
+        Panel? panel = (Panel)GetUserObject(sender).Content;
+        if (panel == null)
+        {
+            Console.WriteLine($"[ERROR] : {GetUserObject(sender)} n'est pas un panel");
+            return;
+        }
+            
+        panel.Children.Add(GetSpawnObject(control));
+
     }
     private void RemoveControl(object? sender, PointerPressedEventArgs e)
     {
         // Check si le sender est bien un control
         if (sender is not Control) return;
         
+        // On recup le truc qu'on veut suppr
+        // Ps : c'est important de recup le userObject, sinon 
+        //      on vas pas delete l'object en entier
         UserObject? userObject = GetUserObject(sender);
+        if (userObject == null) 
+            return;
         
-        if (userObject != null) 
-            UserViewStackPanel.Children.Remove(userObject);
+        // On recup et test le parent pour voir si c'est un panel
+        Panel? panel = (Panel)userObject.Parent;
+        if (panel == null)
+            return;
+        
+        panel.Children.Remove(userObject);
     }
     
 
@@ -143,7 +214,13 @@ public partial class PageView : Window
         // Check si le sender est bien un control
         if (sender is not Control) return;
         
-        var textBox = GetTextbox(sender);
+        // On recup la textBox
+        TextBox? textBox = GetTextbox(sender);
+        
+        // On test si on a bien trouvé une textbox
+        if (textBox == null)
+            return;
+        
         textBox?.Paste();
     }
 
@@ -152,8 +229,14 @@ public partial class PageView : Window
         // Check si le sender est bien un control
         if (sender is not Control) return;
         
-        var textBox = GetTextbox(sender);
-        textBox?.Copy();
+        // On recup la textBox
+        TextBox? textBox = GetTextbox(sender);
+        
+        // On test si on a bien trouvé une textbox
+        if (textBox == null)
+            return;
+        
+        textBox.Copy();
     }
     
     private void CutText(object? sender, PointerPressedEventArgs e)
@@ -161,8 +244,15 @@ public partial class PageView : Window
         // Check si le sender est bien un control
         if (sender is not Control) return;
         
-        var textBox = GetTextbox(sender);
-        textBox?.Cut();
+        // On recup la textBox
+        TextBox? textBox = GetTextbox(sender);
+        
+        // On test si on a bien trouvé une textbox
+        if (textBox == null)
+            return;
+        
+        // On recup cut le contenu 
+        textBox.Cut();
     }
 
     private TextBox? GetTextbox(object? sender)
@@ -178,17 +268,28 @@ public partial class PageView : Window
         return null;
     }
 
-    private UserObject? GetUserObject(object? sender)
+    private UserObject? GetUserObject(object? sender) // On remonte les parents de l'obj jusqu'a trouver un UserObject
     {
         if (sender is Control control)
         {
+            // On test si le control actuel est un UserObject
             if (control.Parent is UserObject userObject)
                 return userObject;
+            
+            // Si le truc de base ne fais pas partie d'un UserObject alors on ne trouvera 
+            // jamais de UserObject dans ses parents et quand il n'y aura plus de parent a 
+            // test, alors on peut être sûr qu'il faut return
+            if (control.Parent == null)
+            {
+                Console.WriteLine($"[ERROR] : no UserObject is detected on : {control}");
+                return null;
+            }
 
+            // on a rien trouver donc au recommence avec le parent d'au dessus
             return GetUserObject(control.Parent);
-                
             
         }
+        // Le sender est invalid, on arrete tout.
         Console.WriteLine($"[ERROR] : {sender} is not a control");
         return null;
     }
