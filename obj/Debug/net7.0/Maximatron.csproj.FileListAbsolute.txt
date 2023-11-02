@@ -280,3 +280,8 @@ C:\Users\Amaro01\OneDrive\Bureau\Maximatron-main\obj\Debug\net7.0\Maximatron.pdb
 C:\Users\Amaro01\OneDrive\Bureau\Maximatron-main\obj\Debug\net7.0\Maximatron.csproj.CopyComplete
 C:\Users\Amaro01\OneDrive\Bureau\Maximatron-main\obj\Debug\net7.0\Maximatron.genruntimeconfig.cache
 C:\Users\Amaro01\OneDrive\Bureau\Maximatron-main\obj\Debug\net7.0\ref\Maximatron.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\ExCSS.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\ShimSkiaSharp.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Svg.Custom.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Svg.Model.dll
+E:\Projets\C#\Maximatron\Maximatron\bin\Debug\net7.0\Avalonia.Svg.dll

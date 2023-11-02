@@ -10,6 +10,7 @@
         <entry key="Controls/NewBlocItem.axaml" value="Maximatron.csproj" />
         <entry key="Controls/NoteControl.axaml" value="Maximatron.csproj" />
         <entry key="Controls/UserObject.axaml" value="Maximatron.csproj" />
+        <entry key="Controls/UserViewControl.axaml" value="Maximatron.csproj" />
         <entry key="Styles/PageViewStyles.axaml" value="Maximatron.csproj" />
         <entry key="ViewModels/dzd.axaml" value="Maximatron.csproj" />
         <entry key="ViewModels/fezfz.axaml" value="Maximatron.csproj" />

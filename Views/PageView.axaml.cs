@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Maximatron.Controls;
+using Maximatron.Services;
 using Maximatron.ViewModels;
 
 namespace Maximatron;
@@ -145,6 +146,21 @@ public partial class PageView : Window
         
         // Creation du context menu (le truc quand tu fais click droit)
         ContextMenu contextMenu = new ContextMenu();
+        
+        // Event Paste
+        MenuItem pasteMenuItem = new MenuItem { Header = "Paste (ctrl + V)" };
+        pasteMenuItem.PointerPressed += PastText;
+        contextMenu.Items.Add(pasteMenuItem);
+
+        // Event Copy
+        MenuItem copyMenuItem = new MenuItem { Header = "Copy (ctrl + C)" };
+        copyMenuItem.PointerPressed += CopyText;
+        contextMenu.Items.Add(copyMenuItem);
+        
+        // Event Cut
+        MenuItem cutMenuItem = new MenuItem { Header = "Cut (ctrl + X)" };
+        cutMenuItem.PointerPressed += CutText;
+        contextMenu.Items.Add(cutMenuItem);
         
         // Event Remove
         MenuItem removeMenuItem = new MenuItem { Header = "Remove" };
@@ -292,5 +308,15 @@ public partial class PageView : Window
         // Le sender est invalid, on arrete tout.
         Console.WriteLine($"[ERROR] : {sender} is not a control");
         return null;
+    }
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        SavingService.SaveFileButton_Clicked(this);
+
+    }
+    private void Button_OnClick1(object? sender, RoutedEventArgs e)
+    {
+        SavingService.OpenFileButton_Clicked(this);
     }
 }

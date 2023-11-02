@@ -12,6 +12,7 @@
           "Avalonia.Desktop": "11.0.5",
           "Avalonia.Diagnostics": "11.0.5",
           "Avalonia.Fonts.Inter": "11.0.5",
+          "Avalonia.Svg": "11.0.0.3",
           "Avalonia.Themes.Fluent": "11.0.5",
           "Avalonia.Xaml.Behaviors": "11.0.2",
           "CommunityToolkit.Mvvm": "8.2.2"
@@ -211,6 +212,18 @@
           }
         }
       },
+      "Avalonia.Svg/11.0.0.3": {
+        "dependencies": {
+          "Avalonia": "11.0.5",
+          "Svg.Model": "1.0.0.3"
+        },
+        "runtime": {
+          "lib/net6.0/Avalonia.Svg.dll": {
+            "assemblyVersion": "11.0.0.3",
+            "fileVersion": "11.0.0.3"
+          }
+        }
+      },
       "Avalonia.Themes.Fluent/11.0.5": {
         "dependencies": {
           "Avalonia": "11.0.5"
@@ -374,6 +387,14 @@
           "lib/net6.0/CommunityToolkit.Mvvm.dll": {
             "assemblyVersion": "8.2.0.0",
             "fileVersion": "8.2.2.1"
+          }
+        }
+      },
+      "ExCSS/4.2.3": {
+        "runtime": {
+          "lib/net7.0/ExCSS.dll": {
+            "assemblyVersion": "4.2.3.0",
+            "fileVersion": "4.2.3.0"
           }
         }
       },
@@ -709,6 +730,14 @@
           }
         }
       },
+      "ShimSkiaSharp/1.0.0.3": {
+        "runtime": {
+          "lib/net6.0/ShimSkiaSharp.dll": {
+            "assemblyVersion": "1.0.0.3",
+            "fileVersion": "1.0.0.3"
+          }
+        }
+      },
       "SkiaSharp/2.88.6": {
         "dependencies": {
           "SkiaSharp.NativeAssets.Win32": "2.88.6",
@@ -774,6 +803,29 @@
             "rid": "win-x86",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Svg.Custom/1.0.0.3": {
+        "dependencies": {
+          "ExCSS": "4.2.3"
+        },
+        "runtime": {
+          "lib/net6.0/Svg.Custom.dll": {
+            "assemblyVersion": "1.0.0.3",
+            "fileVersion": "1.0.0.3"
+          }
+        }
+      },
+      "Svg.Model/1.0.0.3": {
+        "dependencies": {
+          "ShimSkiaSharp": "1.0.0.3",
+          "Svg.Custom": "1.0.0.3"
+        },
+        "runtime": {
+          "lib/net6.0/Svg.Model.dll": {
+            "assemblyVersion": "1.0.0.3",
+            "fileVersion": "1.0.0.3"
           }
         }
       },
@@ -1134,6 +1186,13 @@
       "path": "avalonia.skia/11.0.5",
       "hashPath": "avalonia.skia.11.0.5.nupkg.sha512"
     },
+    "Avalonia.Svg/11.0.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BYIDGOR/G9vQLZs9SWqa11i85Bh0S8StnE2MS9tEpCNUHJ76bTg6RRNqE/fLb11C8rEfVZaEwNpHN2nFQ4EDNw==",
+      "path": "avalonia.svg/11.0.0.3",
+      "hashPath": "avalonia.svg.11.0.0.3.nupkg.sha512"
+    },
     "Avalonia.Themes.Fluent/11.0.5": {
       "type": "package",
       "serviceable": true,
@@ -1231,6 +1290,13 @@
       "sha512": "sha512-r0g0k9tGYdrnz8R7T3x5UiokDffeevzK/2P/9SBL6fqLgN8B157MIi/bVUWI1KAz6ZorZrK9AdABCWUeXZZsvA==",
       "path": "communitytoolkit.mvvm/8.2.2",
       "hashPath": "communitytoolkit.mvvm.8.2.2.nupkg.sha512"
+    },
+    "ExCSS/4.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SyeAfu2wL5247sipJoPUzQfjiwQtfSd8hN4IbgoyVcDx4PP6Dud4znwPRibWQzLtTlUxYYcbf5f4p+EfFC7KtQ==",
+      "path": "excss/4.2.3",
+      "hashPath": "excss.4.2.3.nupkg.sha512"
     },
     "HarfBuzzSharp/2.8.2.3": {
       "type": "package",
@@ -1337,6 +1403,13 @@
       "path": "microsoft.win32.systemevents/6.0.0",
       "hashPath": "microsoft.win32.systemevents.6.0.0.nupkg.sha512"
     },
+    "ShimSkiaSharp/1.0.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xIvruo8cU+APpa2v4cYYuWt8vml2oI8cxilJrozisgNniPn9ZSugluI93ld+R+R0SDLHvwakVgk9rH+os+2uCw==",
+      "path": "shimskiasharp/1.0.0.3",
+      "hashPath": "shimskiasharp.1.0.0.3.nupkg.sha512"
+    },
     "SkiaSharp/2.88.6": {
       "type": "package",
       "serviceable": true,
@@ -1371,6 +1444,20 @@
       "sha512": "sha512-7TzFO0u/g2MpQsTty4fyCDdMcfcWI+aLswwfnYXr3gtNS6VLKdMXPMeKpJa3pJSLnUBN6wD0JjuCe8OoLBQ6cQ==",
       "path": "skiasharp.nativeassets.win32/2.88.6",
       "hashPath": "skiasharp.nativeassets.win32.2.88.6.nupkg.sha512"
+    },
+    "Svg.Custom/1.0.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QjbtwFhnv7cxf3GkRBMe9fjwJ8NmD/q+f2UdNQa5lO6MypYxi9p93gb58koTaQvUvVzO6/tM7Zx/KFwnD6Fblg==",
+      "path": "svg.custom/1.0.0.3",
+      "hashPath": "svg.custom.1.0.0.3.nupkg.sha512"
+    },
+    "Svg.Model/1.0.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JumLfSlV4bg5d+RO4zxW7yGx6eCqqJtAZ3VJHJA3QlH/lJvBc3kSQrNv/p9TF7atl56CR4wD14+DQ591Rnh6sg==",
+      "path": "svg.model/1.0.0.3",
+      "hashPath": "svg.model.1.0.0.3.nupkg.sha512"
     },
     "System.Collections/4.3.0": {
       "type": "package",

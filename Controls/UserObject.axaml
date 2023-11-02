@@ -1,6 +1,9 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Maximatron.Controls">
+        xmlns:controls="using:Maximatron.Controls"
+        xmlns:vm="using:Maximatron.ViewModels"
+        x:DataType="vm:UserObjectModel">
+    
     <Design.PreviewWith>
         <StackPanel Spacing="30">
             <controls:UserObject Classes="BasicList">
@@ -16,7 +19,7 @@
             
         </StackPanel>
     </Design.PreviewWith>
-
+    
     <Style Selector="controls|UserObject">
         <!-- Set Defaults -->
         <Setter Property="Template">
@@ -25,32 +28,14 @@
             </ControlTemplate>
         </Setter>
     </Style>
-    
-    <Style Selector="controls|UserObject.BasicField">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border Background="{DynamicResource DarkGrey}"
-                        BorderBrush="{DynamicResource Secondary}"
-                        BorderThickness="10,1,1,1" 
-                        Margin="20"
-                        CornerRadius="0,0,20,0">
-                    <TextBox Classes="Field" BorderThickness="0" Watermark="Enter text..."
-                             AcceptsReturn="True" AcceptsTab="True"
-                             TextWrapping="Wrap" ContextMenu="{TemplateBinding ContextMenuTest}">
-                        
-                    </TextBox>          
-                </Border>
-            </ControlTemplate>
-        </Setter>
-    </Style>
-    
+
     <Style Selector="controls|UserObject.BasicList">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
                 <Border MinHeight="100" MinWidth="200" 
-                        Background="{DynamicResource DarkGrey}" Padding="20" Margin="20"
-                        BorderBrush="{DynamicResource Secondary}" BorderThickness="10,1,1,1" 
+                        Background="{DynamicResource DarkGrey}" Padding="20"
+                        BorderBrush="{DynamicResource SystemAccentColor}" BorderThickness="10,1,1,1" 
                         ContextMenu="{TemplateBinding ContextMenuTest}"
                         CornerRadius="0,0,20,0">
 
@@ -59,6 +44,7 @@
                         <TextBox Classes="Field" BorderThickness="0" Watermark="LIST"
                                  FontSize="28" Margin="0" Padding="0"
                                  AcceptsReturn="True" AcceptsTab="False"
+                                 Text="{Binding Title}"
                                  TextWrapping="Wrap" ContextMenu="{TemplateBinding ContextMenuTest}"/>
                         <!--Separation-->
                         <Rectangle Height="2" Fill="White" Margin="0,0,0,15"></Rectangle>
@@ -71,19 +57,44 @@
         </Setter>
     </Style>
     
+
+    <Style Selector="controls|UserObject.BasicField">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource DarkGrey}"
+                        BorderBrush="{DynamicResource SystemAccentColor}"
+                        BorderThickness="10,1,1,1" 
+                        CornerRadius="0,0,20,0">
+                    <TextBox Classes="Field" BorderThickness="0" Watermark="Enter text..."
+                             AcceptsReturn="True" AcceptsTab="False"
+                             TextWrapping="Wrap"
+                             ContextMenu="{TemplateBinding ContextMenuTest}"
+                             Text="{Binding TextContent}"/>          
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+    
     <Style Selector="controls|UserObject.BasicCheckBox">
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource DarkGrey}" Margin="20,0,20,0">
-                    <CheckBox CornerRadius="0" HorizontalAlignment="Left" 
-                              Margin="10,10,0,0">
-                        <TextBox Classes="Field" BorderThickness="0" Watermark="Something important"
-                                 FontSize="15" Margin="0" Padding="0"
-                                 AcceptsReturn="True" AcceptsTab="False"
-                                 VerticalAlignment="Center"
-                                 TextWrapping="Wrap" ContextMenu="{TemplateBinding ContextMenuTest}"/>
-                    </CheckBox>
+                <Border Background="{DynamicResource DarkGrey}">
+                    <StackPanel >
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <CheckBox CornerRadius="0" HorizontalAlignment="Left" 
+                                      Margin="10,0,0,0"
+                                      IsChecked="{Binding IsCheck}"/>
+                            <TextBox Classes="Field" BorderThickness="0" Watermark="Something important"
+                                     FontSize="15"
+                                     AcceptsReturn="True" AcceptsTab="False"
+                                     VerticalAlignment="Center"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding TextContent}"
+                                     ContextMenu="{TemplateBinding ContextMenuTest}"/>
+                        </StackPanel>
+                        <Separator Margin="10,0,10,10 " Background="{DynamicResource SystemAccentColor}"></Separator>
+                    </StackPanel>
                 </Border>
             </ControlTemplate>
         </Setter>

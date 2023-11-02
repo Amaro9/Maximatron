@@ -45,12 +45,12 @@
 			</Setter>
 		</Style>
 		<Style Selector="Button.NewUserBloc:pointerover /template/ ContentPresenter" >
-			<Setter Property="Background" Value="{DynamicResource Secondary}"></Setter> 
+			<Setter Property="Background" Value="{DynamicResource SystemAccentColor}"></Setter> 
 			<Setter Property="CornerRadius" Value="0"/>
 		</Style>
 		
 		<Style Selector="Button.NewUserBloc:pressed /template/ ContentPresenter">
-			<Setter Property="Background" Value="{DynamicResource Secondary}" ></Setter> 
+			<Setter Property="Background" Value="{DynamicResource SystemAccentColor}" ></Setter> 
 			<Setter Property="CornerRadius" Value="0"/>
 		</Style>
 		
@@ -65,10 +65,25 @@
 		</Style>
 		
 		<Style Selector="StackPanel.NewBloc.Open">
-			<Setter Property="Height" Value="430"></Setter>
+			<Setter Property="Height" Value="270"></Setter>
 		</Style>
 		
 		<!-- New Blocs Items -->
+    <Style Selector="Separator.Item">
+	    <Setter Property="Opacity" Value="0"></Setter>
+	    <Setter Property="IsEnabled" Value="False"></Setter>
+	    <Setter Property="Transitions">
+		    <Transitions>
+			    <DoubleTransition Property="Opacity" Duration="0:0:0.1" Easing="QuadraticEaseIn"></DoubleTransition>
+			    <BrushTransition Property="Background" Duration="0:0:0.1" Easing="QuadraticEaseIn"></BrushTransition>
+		    </Transitions>
+	    </Setter>
+    </Style>
+    <Style Selector="Separator.Item.Open">
+	    <Setter Property="Opacity" Value="1"></Setter>
+	    <Setter Property="IsEnabled" Value="True"></Setter>
+    </Style>
+    
 		<Style Selector="controls|UserInteractable.Item">
 			<Setter Property="Opacity" Value="0"></Setter>
 			<Setter Property="IsEnabled" Value="False"></Setter>

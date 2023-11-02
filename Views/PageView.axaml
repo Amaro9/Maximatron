@@ -15,7 +15,7 @@
 
 	<Grid RowDefinitions="auto, *">
 		<!-- Title bar -->
-		<Grid Grid.Row="0" ColumnDefinitions="Auto,*" Height="30" IsHitTestVisible="False" Background="{DynamicResource DarkGrey}">
+		<Grid Grid.Row="0" ColumnDefinitions="Auto,*" Height="45" IsHitTestVisible="False" Background="{DynamicResource DarkGrey}">
 			<Image Grid.Column="0" VerticalAlignment="Center" Source="/Assets/avalonia-logo.ico" Width="18" Margin="12,0,12,0"></Image>
 			<TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12" Foreground="White">MAXIMATRON</TextBlock>
 		</Grid>
@@ -68,36 +68,53 @@
 				<!-- Top Barre -->
 				<Grid Grid.Row="0" Height="40" ZIndex="1" Margin="0,10,0,0"
 				      ColumnDefinitions="*, 60">
-					<StackPanel Grid.Column="1">
+					<StackPanel Grid.Column="1"  Margin="0,0,20,40">
 						
 						<!-- Bouton pour le pannel des controls	-->
 						<Button Classes="NewUserBloc"  Margin="0,0,0,10" Padding="10,0"
 						        Command="{Binding NewBlocButtonPressedCommand}"
-						        FontSize="28"
+						        FontSize="22"
 						        Content="{Binding NewBlocBtnTitle}"></Button>
 							
 						<!-- Pannel avec tous les controls-->
-						<StackPanel Width="210"
-						            Background="{DynamicResource DarkGrey}" HorizontalAlignment="Right" Spacing="10"
-						            Classes="NewBloc"
-						            Classes.Open="{Binding IsNewBlocPopupVisible}"
-						            Margin="0,0,0,20">
+						<Border Padding="20,0,20,20"
+						        BorderThickness="2">
+							<StackPanel Width="210"
+							            Background="{DynamicResource DarkGrey}"
+							            HorizontalAlignment="Right" Spacing="10"
+							            Classes="NewBloc"
+							            Classes.Open="{Binding IsNewBlocPopupVisible}">
 								
+								<StackPanel.Effect>
+									<DropShadowEffect Color="{DynamicResource SystemAccentColor}"
+									                  OffsetX="0" OffsetY="0" BlurRadius="10"/>
+								</StackPanel.Effect>
+								
+								<!-- j'arrive pas a mettre un espace entre le haut du stack panel
+									 et les item en bas, ducoup pout l'instant nique et un rectangle invisible
+									 fais l'affaire....
+									 :( -->
+								<Rectangle Height="10"></Rectangle>
+									
 								<!--bouton pour ajouter des controls-->
-								<controls:UserInteractable Classes="Item" TextContent="FIELD"
-								                         Classes.Open="{Binding IsNewBlocPopupVisible}" 
-								                         Click="AddUserObject"
-								                         Tag="FIELD"/>
 								<controls:UserInteractable Classes="Item" TextContent="LIST"
+								                           ImagePath="../Assets/list.svg"
 								                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
 								                           Click="AddUserObject"
 								                           Tag="LIST"/>
-								<controls:UserInteractable Classes="Item" TextContent="CHECKBOX"
+								<controls:UserInteractable Classes="Item" TextContent="FIELD"
+								                           ImagePath="../Assets/field.svg"
 								                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
 								                           Click="AddUserObject"
-								                           Tag="CHECKBOX"/>
-								
-						</StackPanel>
+								                           Tag="FIELD" />
+								<controls:UserInteractable Classes="Item" TextContent="CHECKBOX"
+								                           ImagePath="../Assets/checkMark.svg"
+								                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
+								                           Click="AddUserObject"
+								                           Tag="CHECKBOX"/>					
+
+							</StackPanel>
+						</Border>
 					</StackPanel>
 				</Grid>
 				
@@ -105,17 +122,18 @@
 
 				<ScrollViewer Grid.Row="1" Background="White"
 				              VerticalAlignment="Stretch"
-				              VerticalScrollBarVisibility="Visible">
-					<StackPanel x:Name="UserViewStackPanel">
+				              VerticalScrollBarVisibility="Visible"
+				              Padding="10,0">
+					<StackPanel x:Name="UserViewStackPanel" Spacing="5" Margin="20">
 						<!-- Les element sont ajouter dynamiquement par le user-->
 						<!-- NE RIEN METTRE ICI SAUF DANS DES TEST tkt :) -->
+						
+						<Label x:Name="Label" Height="100" Background="Red"></Label>
+						<Button Height="50" Background="Brown" Click="Button_OnClick">SAVE</Button>
+						<Button Height="50" Background="Brown" Click="Button_OnClick1">LOAD</Button>
 					</StackPanel>
 				</ScrollViewer>
-				
-
 			</Grid>
 		</Grid>
 	</Grid>
-	
-
 </Window>
