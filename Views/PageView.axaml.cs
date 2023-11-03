@@ -27,14 +27,15 @@ public partial class PageView : Window
         UserViewStackPanel.Children.Add(GetSpawnObject(control));
     }
 
-    private Control GetSpawnObject(Control control)
+    private static Control GetSpawnObject(Control control)
     {
         switch (control.Tag)
         {
             case "FIELD":
                 return CreateTextField();
             case "LIST":
-                return CreateList();
+                // si le call vient du bouton c'est que c'est pas une sous liste
+                return control.Name == "ListBtn" ? CreateList() : CreateList(false);
             case "CHECKBOX":
                 return CreateCheckBox();
             default:
@@ -44,7 +45,7 @@ public partial class PageView : Window
     }
 
 
-    private UserObject CreateTextField()
+    public static UserObject CreateTextField()
     {
         UserObject userObject = new UserObject
         {
@@ -88,7 +89,7 @@ public partial class PageView : Window
 
     }
     
-    private UserObject CreateList()
+    public static UserObject CreateList(bool canAddNewList=true)
     {
         UserObject userObject = new UserObject
         {
@@ -96,22 +97,29 @@ public partial class PageView : Window
         };
 
         StackPanel stackPanel = new StackPanel();
+        stackPanel.Name = "ListPanel";
         userObject.Content = stackPanel;
 
         // Creation du context menu (le truc quand tu fais click droit)
         ContextMenu contextMenu = new ContextMenu();
+        
+
+        // On ajoute la propriter d'ajouter une sous liste seulement si c'est pas 
+        // Deja une sous liste
+        if (canAddNewList)
+        {
+            // Event Add List to List
+            MenuItem addList = new MenuItem { Header = "Add List" };
+            addList.Tag = "LIST";
+            addList.PointerPressed += AddControlInList;
+            contextMenu.Items.Add(addList);
+        }
 
         // Event Add Field to list
         MenuItem addField = new MenuItem { Header = "Add Text Field" };
         addField.Tag = "FIELD";
         addField.PointerPressed += AddControlInList;
         contextMenu.Items.Add(addField);
-        
-        // Event Add Field to list
-        MenuItem addList = new MenuItem { Header = "Add List" };
-        addList.Tag = "LIST";
-        addList.PointerPressed += AddControlInList;
-        contextMenu.Items.Add(addList);
         
         // Event Add Field to list
         MenuItem addCheckBox = new MenuItem { Header = "Add CheckBox" };
@@ -137,11 +145,12 @@ public partial class PageView : Window
         // On return le userObject fini
         return userObject;
     }
-    private UserObject CreateCheckBox()
+    public static UserObject CreateCheckBox()
     {
         UserObject userObject = new UserObject
         {
-            Classes = { "BasicCheckBox" }
+            Classes = { "BasicCheckBox" },
+            Name = "ListPanel"
         };
         
         // Creation du context menu (le truc quand tu fais click droit)
@@ -184,13 +193,13 @@ public partial class PageView : Window
     
     
     
-    private void PrintTemplateControl(object? sender, PointerPressedEventArgs e)
+    private static void PrintTemplateControl(object? sender, PointerPressedEventArgs e)
     {
         Console.WriteLine($"[INFO] : TemplateControl is {GetUserObject(sender)?.Classes[0]}");
     }
 
 
-    private void AddControlInList(object? sender, PointerPressedEventArgs e)
+    private static void AddControlInList(object? sender, PointerPressedEventArgs e)
     {
         if (sender is not Control control) return;
         
@@ -200,11 +209,10 @@ public partial class PageView : Window
             Console.WriteLine($"[ERROR] : {GetUserObject(sender)} n'est pas un panel");
             return;
         }
-            
         panel.Children.Add(GetSpawnObject(control));
 
     }
-    private void RemoveControl(object? sender, PointerPressedEventArgs e)
+    private static void RemoveControl(object? sender, PointerPressedEventArgs e)
     {
         // Check si le sender est bien un control
         if (sender is not Control) return;
@@ -225,7 +233,7 @@ public partial class PageView : Window
     }
     
 
-    private void PastText(object? sender, PointerPressedEventArgs e)
+    private static void PastText(object? sender, PointerPressedEventArgs e)
     {
         // Check si le sender est bien un control
         if (sender is not Control) return;
@@ -240,7 +248,7 @@ public partial class PageView : Window
         textBox?.Paste();
     }
 
-    private void CopyText(object? sender, PointerPressedEventArgs e)
+    private static void CopyText(object? sender, PointerPressedEventArgs e)
     {
         // Check si le sender est bien un control
         if (sender is not Control) return;
@@ -255,7 +263,7 @@ public partial class PageView : Window
         textBox.Copy();
     }
     
-    private void CutText(object? sender, PointerPressedEventArgs e)
+    private static void CutText(object? sender, PointerPressedEventArgs e)
     {
         // Check si le sender est bien un control
         if (sender is not Control) return;
@@ -271,7 +279,7 @@ public partial class PageView : Window
         textBox.Cut();
     }
 
-    private TextBox? GetTextbox(object? sender)
+    private static TextBox? GetTextbox(object? sender)
     {
         if (sender is Control control)
         {
@@ -284,7 +292,7 @@ public partial class PageView : Window
         return null;
     }
 
-    private UserObject? GetUserObject(object? sender) // On remonte les parents de l'obj jusqu'a trouver un UserObject
+    private static UserObject? GetUserObject(object? sender) // On remonte les parents de l'obj jusqu'a trouver un UserObject
     {
         if (sender is Control control)
         {
@@ -310,13 +318,13 @@ public partial class PageView : Window
         return null;
     }
 
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    private void Button_Save(object? sender, RoutedEventArgs e)
     {
-        SavingService.SaveFileButton_Clicked(this);
+        SavingService.Save(this);
 
     }
-    private void Button_OnClick1(object? sender, RoutedEventArgs e)
+    private void Button_Load(object? sender, RoutedEventArgs e)
     {
-        SavingService.OpenFileButton_Clicked(this);
+        SavingService.Load(this);
     }
 }

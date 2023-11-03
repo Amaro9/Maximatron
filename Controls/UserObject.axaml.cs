@@ -20,4 +20,5 @@ public class UserObject : ContentControl
     {
         DataContext = new UserObjectModel();
     }
+    
 }
