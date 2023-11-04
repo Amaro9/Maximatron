@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Maximatron.Controls;
 using Maximatron.ViewModels;
-using Microsoft.Win32.SafeHandles;
+// ReSharper disable All
 
 namespace Maximatron.Services;
 
@@ -20,8 +21,9 @@ public struct UserObjectData
     public bool IsChild;
 }
 
-public static class SavingService
+public class SavingService
 {
+  
     public static async void Load(Visual visual)
     {
         
@@ -53,6 +55,35 @@ public static class SavingService
             // On converti la string en info que l'on vas pouvoir utiliser
             List<UserObjectData> save = LoadInfoFromFile(fileContent);
             CreateUserObjectFromSave(userViewPanel, save);
+        }
+    }
+
+    public static void StartLoad(Visual visual, string path)
+    {
+        // On get la page en entiere (techniquement y'en a toujours une mais on sait jamais)
+        var topLevel = TopLevel.GetTopLevel(visual);
+        if (topLevel == null)
+            throw new Exception($"No topLevel : {visual}");
+
+        
+        // On get le UserViewStackPanel (là ou tous les truc que le user creer sont localiser)
+        Panel? userViewPanel = topLevel.FindControl<Panel>("UserViewStackPanel");
+        if (userViewPanel == null)
+            throw new Exception($"No UserViewStackPanel : {topLevel}");
+
+        
+        try
+        {
+            // Juste get ce qu'il y as de le fichier
+            string fileContent = File.ReadAllText(path);
+            // On converti la string en info que l'on vas pouvoir utiliser
+            List<UserObjectData> save = LoadInfoFromFile(fileContent);
+            CreateUserObjectFromSave(userViewPanel, save);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[ERROR] : " + ex.Message);
+            return;
         }
     }
 
@@ -213,7 +244,7 @@ public static class SavingService
         }
     }
 
-    public static async void Save(Visual visual)
+    public static async Task<string> Save(Visual visual, bool quickSave, string savePath)
     {
         // On get la page en entiere (techniquement y'en a toujours une mais on sait jamais)
         var topLevel = TopLevel.GetTopLevel(visual);
@@ -225,26 +256,66 @@ public static class SavingService
         Panel? userViewPanel = topLevel.FindControl<Panel>("UserViewStackPanel");
         if (userViewPanel == null)
             throw new Exception($"No UserViewStackPanel : {topLevel}");
+
         
-       
+        string filePath = savePath;
+        // Console.WriteLine(savePath);
+        //
+        // Console.WriteLine(filePath);
         
-        // On creer la fenetre de dialogue
-        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        // Si on fais pas de quick save, alors on affiche un dialoque pour savoir ou save.
+        if (!quickSave)
         {
-            Title = "Save Text File",
-            SuggestedFileName = "New Document",
-            FileTypeChoices = new [] { FilePickerFileTypes.TextPlain }
+            // On creer la fenetre de dialogue
+            var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = "Save Text File",
+                SuggestedFileName = "New Document",
+                FileTypeChoices = new [] { FilePickerFileTypes.TextPlain }
+                
+            });
             
-        });
-        
-        if (file is not null)
-        {
-            await using var stream = await file.OpenWriteAsync();
-            using var streamWriter = new StreamWriter(stream);
-            
-            // Ecriture du texte
-            await streamWriter.WriteLineAsync(GetPageUserContent(userViewPanel));
+            if (file != null)
+            {
+                // On store là ou le user save son fichier
+                filePath = file.Path.ToString();
+                
+                await using var stream = await file.OpenWriteAsync();
+                using var streamWriter = new StreamWriter(stream);
+                
+                // Ecriture du texte
+                await streamWriter.WriteLineAsync(GetPageUserContent(userViewPanel));
+            }
         }
+        else
+        {
+            // Si jamais le path st vide on fais juste une save classique (avec le dialogue)
+            if (filePath == string.Empty)
+            {
+                return await Save(visual, false, string.Empty);
+            }
+            
+            string saveString = GetPageUserContent(userViewPanel);
+            try
+            {
+                // Ecriture du texte
+                File.WriteAllText(filePath, saveString, Encoding.UTF8);
+
+                // Debug
+                Console.WriteLine("File saved: " + filePath);
+            }
+            catch (IOException ex) 
+            {
+                // Si jamais ça foire, genre le path est pas valid on arrette et on fais une save classique
+                Console.WriteLine("[ERROR] : " + ex.Message);
+            }
+        }
+
+        
+        filePath = filePath.Replace("file:///", "");
+        // Debug.
+        Console.WriteLine($"[INFO] : {filePath}");
+        return filePath;
     }
 
     
@@ -308,7 +379,7 @@ public static class SavingService
         }
 
         // Debug.
-        Console.WriteLine($"[INFO] : Saving successful : {saveString} ");
+        //Console.WriteLine($"[INFO] : Saving successful : {saveString} ");
         
         // On return les info qu'on vas save
         return saveString;
@@ -342,6 +413,38 @@ public static class SavingService
             IsChild = isChild,
         };
     }
+    
+    
+    
+    public static void SaveStringToFile(string filePath, string content)
+    {
+        try
+        {
+            File.WriteAllText(filePath, content);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[ERROR] : " + ex.Message);
+        }
+    }
+
+    public static string ReadStringFromFile(string filePath)
+    {
+        try
+        {
+            // Juste return ce qu'il y as de le fichier
+            return File.ReadAllText(filePath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[ERROR] : " + ex.Message);
+            return String.Empty;
+        }
+    
+    }
+
+
+
      
    
 }

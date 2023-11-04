@@ -6,6 +6,7 @@
         <entry key="App.axaml" value="Maximatron.csproj" />
         <entry key="Controls/BlockControl.axaml" value="Maximatron.csproj" />
         <entry key="Controls/CheckBoxControl.axaml" value="Maximatron.csproj" />
+        <entry key="Controls/HierarchyControl.axaml" value="Maximatron.csproj" />
         <entry key="Controls/NewBlocControl.axaml" value="Maximatron.csproj" />
         <entry key="Controls/NewBlocItem.axaml" value="Maximatron.csproj" />
         <entry key="Controls/NoteControl.axaml" value="Maximatron.csproj" />

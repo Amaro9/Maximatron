@@ -1,0 +1,44 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
+             x:Class="Maximatron.Controls.HierarchyControl">
+	<Grid Background="{DynamicResource DarkGrey}" Grid.Column="0"
+	      RowDefinitions="Auto, Auto, *">
+
+		<Label Grid.Row="0" HorizontalAlignment="Center" Margin="5,10,5,0"
+		       FontWeight="Normal" Foreground="WhiteSmoke" FontSize="32">HIERARCHY</Label>
+
+		<!-- Path -->
+		<TextBlock Grid.Row="1" Margin="10,30"
+			TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="14">
+			> Home > ...
+		</TextBlock>
+
+		<!-- User Pages -->
+		<StackPanel Grid.Row="2" Margin="15,40,0,0">
+
+			<!-- User Pages templates -->
+			<!--PS c'est pas tres fontionnel-->
+			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+				> Random page
+			</TextBlock>
+			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+				> Random page
+			</TextBlock>
+			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+				> Random page
+			</TextBlock>
+			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+				> Random page
+			</TextBlock>
+			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+				> Random page
+			</TextBlock>
+			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
+				> Random page
+			</TextBlock>
+		</StackPanel>
+	</Grid>
+</UserControl>

@@ -4,6 +4,9 @@
         xmlns:vm="using:Maximatron.ViewModels"
         x:DataType="vm:UserObjectModel">
     
+    <!-- TODO :  -->
+    <!-- - La text box de la checkbox ne wrap pas le texte, pourtant y'a le TextWrapping = True -->
+        
     <Design.PreviewWith>
         <StackPanel Spacing="30">
             <controls:UserObject Classes="BasicList">

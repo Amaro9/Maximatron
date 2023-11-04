@@ -1,6 +1,9 @@
 ﻿using System;
+using Avalonia;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Maximatron.Services;
 
 namespace Maximatron.ViewModels;
 
@@ -16,6 +19,7 @@ public partial class PageViewModel : ViewModelBase
         IsNewBlocPopupVisible ^= true;
         NewBlocBtnTitle = IsNewBlocPopupVisible ? "X" : "+";
     }
+    
     
     
     

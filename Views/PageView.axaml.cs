@@ -1,20 +1,24 @@
 using System;
-using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Maximatron.Controls;
 using Maximatron.Services;
-using Maximatron.ViewModels;
+// ReSharper disable All
 
 namespace Maximatron;
 
 public partial class PageView : Window
 {
+    private string lastSavePath = string.Empty;
+    
     public PageView()
     {
         InitializeComponent();
+        lastSavePath = SavingService.ReadStringFromFile("lastSavePath.txt");
+        SavingService.StartLoad(this, lastSavePath);
+        Console.WriteLine(lastSavePath);
     }
 
     private void AddUserObject(object? sender, RoutedEventArgs e)
@@ -318,13 +322,25 @@ public partial class PageView : Window
         return null;
     }
 
-    private void Button_Save(object? sender, RoutedEventArgs e)
+    private async void Button_Save(object? sender, RoutedEventArgs e)
     {
-        SavingService.Save(this);
+        string path = "lastSavePath.txt";
+        string content = await SavingService.Save(this, false, lastSavePath);
+        SavingService.SaveStringToFile(path, content);
 
+    }
+    
+    private async void Button_QuickSave(object? sender, RoutedEventArgs e)
+    {
+        await SavingService.Save(this, true, lastSavePath);
     }
     private void Button_Load(object? sender, RoutedEventArgs e)
     {
         SavingService.Load(this);
     }
+    
+    
+  
+    
+    
 }
