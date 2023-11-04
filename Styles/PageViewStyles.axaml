@@ -119,6 +119,17 @@
 		    </ControlTemplate>
 	    </Setter>
     </Style>
+    
+    
+    <Style Selector="Button.topBar">
+	    <Setter Property="Background" Value="{DynamicResource DarkGrey}"></Setter>
+    </Style>
+    <Style Selector="Button.topBar:pointerover /template/ ContentPresenter">
+	    <Setter Property="Background" Value="{DynamicResource LightGrey}"></Setter>
+    </Style>
+    <Style Selector="Button.topBar:pressed">
+	    <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"></Setter>
+    </Style>
 
 </Styles>
 

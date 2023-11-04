@@ -21,6 +21,7 @@
         <SolidColorBrush x:Key="LightGrey">#585858</SolidColorBrush>
         <SolidColorBrush x:Key="Secondary">#ffe7c3</SolidColorBrush>
         <SolidColorBrush x:Key="Pink">#ee87f9</SolidColorBrush>
+        <SolidColorBrush x:Key="White">#d9d9d9</SolidColorBrush>
         
     </Application.Resources>
 </Application>

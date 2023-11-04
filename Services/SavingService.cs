@@ -24,8 +24,15 @@ public struct UserObjectData
 public class SavingService
 {
   
-    public static async void Load(Visual visual)
+    public static async Task<string> Load(Visual visual, bool quickLoad=false, string path="")
     {
+        if (quickLoad && (path == string.Empty || path == ""))
+        {
+            return string.Empty;
+        }
+        
+        // Au cas ou si jamais ça a save un truc avec le file:/// devant (normalement ça arrive jamais)
+        string filePath = path.Replace("file:///", "");
         
         // On get la page en entiere (techniquement y'en a toujours une mais on sait jamais)
         var topLevel = TopLevel.GetTopLevel(visual);
@@ -37,6 +44,24 @@ public class SavingService
         Panel? userViewPanel = topLevel.FindControl<Panel>("UserViewStackPanel");
         if (userViewPanel == null)
             throw new Exception($"No UserViewStackPanel : {topLevel}");
+
+        if (quickLoad && path != string.Empty)
+        {
+            try
+            {
+                // Juste get ce qu'il y as de le fichier
+                string fileContent = File.ReadAllText(path);
+                // On converti la string en info que l'on vas pouvoir utiliser
+                List<UserObjectData> save = LoadInfoFromFile(fileContent);
+                CreateUserObjectFromSave(userViewPanel, save);
+                return path;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[ERROR] : " + ex.Message);
+                return string.Empty;
+            }
+        }
 
         
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -55,37 +80,17 @@ public class SavingService
             // On converti la string en info que l'on vas pouvoir utiliser
             List<UserObjectData> save = LoadInfoFromFile(fileContent);
             CreateUserObjectFromSave(userViewPanel, save);
+
+            filePath = files[0].Path.ToString();
+            filePath = filePath.Replace("file:///", "");
+            // Debug.
+            Console.WriteLine($"[INFO] file load at : { filePath}");
+            return filePath;
         }
-    }
-
-    public static void StartLoad(Visual visual, string path)
-    {
-        // On get la page en entiere (techniquement y'en a toujours une mais on sait jamais)
-        var topLevel = TopLevel.GetTopLevel(visual);
-        if (topLevel == null)
-            throw new Exception($"No topLevel : {visual}");
-
         
-        // On get le UserViewStackPanel (là ou tous les truc que le user creer sont localiser)
-        Panel? userViewPanel = topLevel.FindControl<Panel>("UserViewStackPanel");
-        if (userViewPanel == null)
-            throw new Exception($"No UserViewStackPanel : {topLevel}");
-
-        
-        try
-        {
-            // Juste get ce qu'il y as de le fichier
-            string fileContent = File.ReadAllText(path);
-            // On converti la string en info que l'on vas pouvoir utiliser
-            List<UserObjectData> save = LoadInfoFromFile(fileContent);
-            CreateUserObjectFromSave(userViewPanel, save);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("[ERROR] : " + ex.Message);
-            return;
-        }
+        return string.Empty;
     }
+    
 
     private static List<UserObjectData> LoadInfoFromFile(string input)
     {
@@ -259,9 +264,6 @@ public class SavingService
 
         
         string filePath = savePath;
-        // Console.WriteLine(savePath);
-        //
-        // Console.WriteLine(filePath);
         
         // Si on fais pas de quick save, alors on affiche un dialoque pour savoir ou save.
         if (!quickSave)
@@ -311,10 +313,11 @@ public class SavingService
             }
         }
 
-        
+        // On enleve un truc au debut
         filePath = filePath.Replace("file:///", "");
+        
         // Debug.
-        Console.WriteLine($"[INFO] : {filePath}");
+        Console.WriteLine($"[INFO] file save at : {filePath}");
         return filePath;
     }
 

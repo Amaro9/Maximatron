@@ -16,10 +16,7 @@ namespace Maximatron
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new PageView
-                {
-                    DataContext = new PageViewModel(),
-                };
+                desktop.MainWindow = new PageView();
             }
 
             base.OnFrameworkInitializationCompleted();

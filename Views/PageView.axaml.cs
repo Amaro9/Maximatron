@@ -5,20 +5,53 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Maximatron.Controls;
 using Maximatron.Services;
+using Maximatron.ViewModels;
+
 // ReSharper disable All
 
 namespace Maximatron;
 
 public partial class PageView : Window
 {
-    private string lastSavePath = string.Empty;
-    
+    public PageViewModel model;
     public PageView()
     {
         InitializeComponent();
-        lastSavePath = SavingService.ReadStringFromFile("lastSavePath.txt");
-        SavingService.StartLoad(this, lastSavePath);
-        Console.WriteLine(lastSavePath);
+        DataContext = new PageViewModel();
+        model = (PageViewModel)DataContext!;
+        
+        Load();
+    }
+
+    public async void Load()
+    {
+        model.LastSavePath = SavingService.ReadStringFromFile("lastSavePath.txt");
+        await SavingService.Load(this,true, model.LastSavePath);
+        model.GetDocName();
+
+    }
+    
+    private async void Button_Save(object? sender, RoutedEventArgs e)
+    {
+        string path = "lastSavePath.txt";
+        model.LastSavePath = await SavingService.Save(this, false, model.LastSavePath);
+        SavingService.SaveStringToFile(path, model.LastSavePath);
+        
+        model.GetDocName();
+
+    }
+    
+    private async void Button_QuickSave(object? sender, RoutedEventArgs e)
+    {
+        await SavingService.Save(this, true, model.LastSavePath);
+    }
+    private async void Button_Load(object? sender, RoutedEventArgs e)
+    {
+        string path = "lastSavePath.txt";
+        model.LastSavePath = await SavingService.Load(this);
+        SavingService.SaveStringToFile(path, model.LastSavePath);
+        model.GetDocName();
+
     }
 
     private void AddUserObject(object? sender, RoutedEventArgs e)
@@ -321,26 +354,5 @@ public partial class PageView : Window
         Console.WriteLine($"[ERROR] : {sender} is not a control");
         return null;
     }
-
-    private async void Button_Save(object? sender, RoutedEventArgs e)
-    {
-        string path = "lastSavePath.txt";
-        string content = await SavingService.Save(this, false, lastSavePath);
-        SavingService.SaveStringToFile(path, content);
-
-    }
-    
-    private async void Button_QuickSave(object? sender, RoutedEventArgs e)
-    {
-        await SavingService.Save(this, true, lastSavePath);
-    }
-    private void Button_Load(object? sender, RoutedEventArgs e)
-    {
-        SavingService.Load(this);
-    }
-    
-    
-  
-    
     
 }
