@@ -14,6 +14,7 @@ namespace Maximatron;
 public partial class PageView : Window
 {
     public PageViewModel model;
+    public static string PATH = "lastSavePath.txt"; 
     public PageView()
     {
         InitializeComponent();
@@ -26,7 +27,7 @@ public partial class PageView : Window
     }
     public async void Load()
     {
-        model.LastSavePath = SavingService.ReadStringFromFile("lastSavePath.txt");
+        model.LastSavePath = SavingService.ReadStringFromFile(PATH);
         await SavingService.Load(this,true, model.LastSavePath);
         model.GetDocName();
         
@@ -41,9 +42,8 @@ public partial class PageView : Window
     }
     private async void Button_Save(object? sender, RoutedEventArgs e)
     {
-        string path = "lastSavePath.txt";
         model.LastSavePath = await SavingService.Save(this, false, model.LastSavePath);
-        SavingService.SaveStringToFile(path, model.LastSavePath);
+        SavingService.SaveStringToFile(PATH, model.LastSavePath);
         model.GetDocName();
 
         if (model.LastSavePath != string.Empty)
@@ -57,7 +57,8 @@ public partial class PageView : Window
     }
     private async void Button_QuickSave(object? sender, RoutedEventArgs e)
     {
-        await SavingService.Save(this, true, model.LastSavePath);
+        model.LastSavePath = await SavingService.Save(this, true, model.LastSavePath);
+        SavingService.SaveStringToFile(PATH, model.LastSavePath);
         model.GetDocName();
         if (model.LastSavePath != string.Empty)
         {
@@ -70,9 +71,8 @@ public partial class PageView : Window
     }
     private async void Button_Load(object? sender, RoutedEventArgs e)
     {
-        string path = "lastSavePath.txt";
         model.LastSavePath = await SavingService.Load(this);
-        SavingService.SaveStringToFile(path, model.LastSavePath);
+        SavingService.SaveStringToFile(PATH, model.LastSavePath);
         model.GetDocName();
         
         if (model.LastSavePath != string.Empty)

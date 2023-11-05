@@ -56,8 +56,11 @@ public partial class PageViewModel : ViewModelBase
 
     public void GetDocName()
     {
-        if (LastSavePath == string.Empty || LastSavePath == "")
+        if (LastSavePath == string.Empty)
+        {
+            DocName = string.Empty;
             return;
+        }
         
         string[] parts = LastSavePath.Split("/");
         DocName = parts.Last();
@@ -104,6 +107,25 @@ public partial class PageViewModel : ViewModelBase
         
         // On commence le timer
         timer.Start();
+    }
+    
+    [RelayCommand]
+    private void CreateNewPage()
+    {
+        // TODO : check si la page est save avant de tout clear
+
+        if (!init || userViewPanel == null)
+            return;
+        
+        // On clear la page de tous les element qu'elle contenait
+        userViewPanel.Children.Clear();
+        
+        // On reset la save
+        LastSavePath = string.Empty;
+        GetDocName();
+        
+        // Petit notif pour du feedback
+        AddNewNotification("New Document Created", string.Empty, new NotificationBrushColor().Success);
     }
     
 }

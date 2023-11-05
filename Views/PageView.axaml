@@ -52,9 +52,23 @@
 								<WrapPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
 								           Margin="0,0,40,0">
 									
+									<Button Height="50" Width="50" Command="{Binding CreateNewPageCommand}"
+									        Margin="10,0,0,0"
+									        Classes="topBar"
+									        Padding="10"
+									        HotKey="Ctrl+n">
+										<ToolTip.Tip>
+											<StackPanel>
+												<TextBlock FontSize="18">New Document</TextBlock>
+												<TextBlock FontSize="13">ctrl + n</TextBlock>
+											</StackPanel>
+										</ToolTip.Tip>
+										<Svg Path="/Assets/newPage.svg"></Svg>
+									</Button>
+									
 									<Button Height="50" Width="50" Click="Button_Save"
 									        Margin="10,0,0,0"
-											Classes="topBar"
+									        Classes="topBar"
 									        Padding="10">
 										<ToolTip.Tip>
 											<StackPanel>

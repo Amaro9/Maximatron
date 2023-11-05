@@ -300,7 +300,9 @@ public class SavingService
             // Si jamais le path st vide on fais juste une save classique (avec le dialogue)
             if (filePath == string.Empty)
             {
-                return await Save(visual, false, string.Empty);
+                string result = await Save(visual, false, string.Empty);
+                Console.WriteLine( result);
+                return result;
             }
             
             string saveString = GetPageUserContent(userViewPanel);
