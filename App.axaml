@@ -13,6 +13,7 @@
         <FluentTheme />
         <StyleInclude Source="/Controls/NewBlocControl.axaml"></StyleInclude> 
         <StyleInclude Source="/Controls/UserObject.axaml"></StyleInclude>
+        <StyleInclude Source="/Controls/NotificationControl.axaml"></StyleInclude>
         <StyleInclude Source="/Styles/PageViewStyles.axaml"/>
     </Application.Styles>
              

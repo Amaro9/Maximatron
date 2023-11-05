@@ -20,30 +20,53 @@ public partial class PageView : Window
         DataContext = new PageViewModel();
         model = (PageViewModel)DataContext!;
         
+        model.Init(UserViewStackPanel, NotificationPanel);
+        
         Load();
     }
-
     public async void Load()
     {
         model.LastSavePath = SavingService.ReadStringFromFile("lastSavePath.txt");
         await SavingService.Load(this,true, model.LastSavePath);
         model.GetDocName();
-
+        
+        if (model.LastSavePath != string.Empty)
+        {
+            model.AddNewNotification("file load successfuly", "(" + model.DocName + ")", new NotificationBrushColor().Success);
+        }
+        else
+        {
+            model.AddNewNotification("Loading Failed", "Cannot open last edited file.", new NotificationBrushColor().Error);
+        }
     }
-    
     private async void Button_Save(object? sender, RoutedEventArgs e)
     {
         string path = "lastSavePath.txt";
         model.LastSavePath = await SavingService.Save(this, false, model.LastSavePath);
         SavingService.SaveStringToFile(path, model.LastSavePath);
-        
         model.GetDocName();
 
+        if (model.LastSavePath != string.Empty)
+        {
+            model.AddNewNotification("file saved successfuly", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
+        }
+        else
+        {
+            model.AddNewNotification("Save Cancel", String.Empty, new NotificationBrushColor().Warning);
+        }
     }
-    
     private async void Button_QuickSave(object? sender, RoutedEventArgs e)
     {
         await SavingService.Save(this, true, model.LastSavePath);
+        model.GetDocName();
+        if (model.LastSavePath != string.Empty)
+        {
+            model.AddNewNotification("file saved successfuly", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
+        }
+        else
+        {
+            model.AddNewNotification("Save Cancel", string.Empty, new NotificationBrushColor().Warning);
+        }
     }
     private async void Button_Load(object? sender, RoutedEventArgs e)
     {
@@ -51,7 +74,15 @@ public partial class PageView : Window
         model.LastSavePath = await SavingService.Load(this);
         SavingService.SaveStringToFile(path, model.LastSavePath);
         model.GetDocName();
-
+        
+        if (model.LastSavePath != string.Empty)
+        {
+            model.AddNewNotification("file load successfuly", "(" + model.DocName + ")", new NotificationBrushColor().Success);
+        }
+        else
+        {
+            model.AddNewNotification("loading Cancel", string.Empty, new NotificationBrushColor().Warning);
+        }
     }
 
     private void AddUserObject(object? sender, RoutedEventArgs e)
@@ -60,6 +91,9 @@ public partial class PageView : Window
         if (sender is not UserInteractable)
             throw new Exception($"[ERROR] : {sender} is not a UserInteractable !");
 
+
+        if (!model.DocName.Contains("*"))
+            model.DocName += "*";
         UserInteractable control = (UserInteractable)sender;
         UserViewStackPanel.Children.Add(GetSpawnObject(control));
     }

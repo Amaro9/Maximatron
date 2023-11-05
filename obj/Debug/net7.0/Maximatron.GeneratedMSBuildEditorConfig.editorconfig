@@ -24,6 +24,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [E:/Projets/C\#/Maximatron/Maximatron/Controls/NewBlocControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[E:/Projets/C\#/Maximatron/Maximatron/Controls/NotificationControl.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [E:/Projets/C\#/Maximatron/Maximatron/Controls/UserObject.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

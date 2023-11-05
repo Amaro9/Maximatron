@@ -23,6 +23,10 @@ public struct UserObjectData
 
 public class SavingService
 {
+    /* TODO :
+     * Quand on load ou qu'on fais une nouvelle page
+     * faut demander au user si il veut save 
+     */
   
     public static async Task<string> Load(Visual visual, bool quickLoad=false, string path="")
     {
@@ -59,7 +63,7 @@ public class SavingService
             catch (Exception ex)
             {
                 Console.WriteLine("[ERROR] : " + ex.Message);
-                return string.Empty;
+                return path;
             }
         }
 
@@ -67,7 +71,9 @@ public class SavingService
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Open Text File",
-            AllowMultiple = false
+            AllowMultiple = false,
+            FileTypeFilter = new [] { FilePickerFileTypes.TextPlain } 
+            
         });
 
         if (files.Count >= 1)
@@ -88,7 +94,7 @@ public class SavingService
             return filePath;
         }
         
-        return string.Empty;
+        return path;
     }
     
 

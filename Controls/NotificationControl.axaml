@@ -1,0 +1,59 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Maximatron.Controls">
+    <Design.PreviewWith>
+        <controls:NotificationControl />
+    </Design.PreviewWith>
+    
+    <Style Selector="controls|NotificationControl">
+        <!-- Set Defaults -->
+        <!-- TODO : fermer la notif quand on click sur le X-->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="Parent"
+                        Padding="25, 12" 
+                        BorderBrush="{TemplateBinding BorderColor}"
+                        BorderThickness="0,5,0,0"
+                        Background="{DynamicResource LightGrey}">
+                    <StackPanel x:Name="ein" Orientation="Horizontal" Spacing="20">
+                        
+                        <!-- <Button HorizontalAlignment="Left"  -->
+                        <!--         Height="35" Width="40" -->
+                        <!--         VerticalContentAlignment="Center" -->
+                        <!--         HorizontalContentAlignment="Center" -->
+                        <!--         FontSize="18" Padding="0">X</Button> -->
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock FontSize="14" Text="{TemplateBinding Title}"/>
+                            <TextBlock FontSize="8" Text="{TemplateBinding Description}"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <ToolTip.Tip>
+                        <TextBlock FontSize="12">Click to close</TextBlock>
+                    </ToolTip.Tip>
+                </Border>
+            </ControlTemplate>
+            
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:2" Easing="QuadraticEaseIn"> 
+                <KeyFrame Cue="0%">
+                    <Setter Property="TranslateTransform.Y" Value="100"/>
+                </KeyFrame>
+                <KeyFrame Cue="1%">
+                    <Setter Property="TranslateTransform.Y" Value="-30"/>
+                </KeyFrame>          
+                <KeyFrame Cue="2%">
+                    <Setter Property="TranslateTransform.Y" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="80%">
+                    <Setter Property="TranslateTransform.Y" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="TranslateTransform.Y" Value="100"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+</Styles>

@@ -49,28 +49,50 @@
 								           TextWrapping="Wrap"
 								           Text="{Binding DocName}"/>
 		
-								<WrapPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+								<WrapPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
+								           Margin="0,0,40,0">
 									
-									<Button  Height="50" Width="50" Click="Button_Save"
+									<Button Height="50" Width="50" Click="Button_Save"
 									        Margin="10,0,0,0"
 											Classes="topBar"
 									        Padding="10">
+										<ToolTip.Tip>
+											<StackPanel>
+												<TextBlock FontSize="18">Save as</TextBlock>
+											</StackPanel>
+										</ToolTip.Tip>
 										<Svg Path="/Assets/save.svg"></Svg>
 									</Button>
 									
 									<Button Height="50" Width="50" Click="Button_QuickSave"
 									        Margin="10,0,0,0"
 									        Classes="topBar"
-									        Padding="10">
+									        Padding="10"
+									        HotKey="Ctrl+s">
+										<ToolTip.Tip>
+											<StackPanel>
+												<TextBlock FontSize="18">Save</TextBlock>
+												<TextBlock FontSize="13">ctrl + s</TextBlock>
+											</StackPanel>
+										</ToolTip.Tip>
 										<Svg Path="/Assets/quickSave.svg"></Svg>
 									</Button>
 									
 									<Button Height="50" Width="50" Click="Button_Load"
 									        Classes="topBar"
-									        Margin="10,0,0,0">
-										<Svg Path="/Assets/load.svg"></Svg>
+									        ContextFlyout=""
+									        Margin="10,0,0,0"
+									        HotKey="Ctrl+o">
+										<StackPanel>
+											<ToolTip.Tip>
+												<StackPanel>
+													<TextBlock FontSize="18">Load File</TextBlock>
+													<TextBlock FontSize="12">Ctrl + o</TextBlock>
+												</StackPanel>
+											</ToolTip.Tip>
+											<Svg Path="/Assets/load.svg"></Svg>
+										</StackPanel>
 									</Button>
-									
 									
 									<Button Height="50" Width="50"
 									        Padding="10,0"
@@ -78,7 +100,14 @@
 									        Classes="topBar"
 									        Command="{Binding NewBlocButtonPressedCommand}"
 									        Content="{Binding NewBlocBtnTitle}"
-									        FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+									        FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+										<ToolTip.Tip>
+											<StackPanel>
+												<TextBlock FontSize="18">Control Menu</TextBlock>
+												<TextBlock FontSize="13">Select a new control to place in the page</TextBlock>
+											</StackPanel>
+										</ToolTip.Tip>
+									</Button>
 								</WrapPanel>
 								
 							</Grid>
@@ -87,7 +116,8 @@
 					<!-- Pannel avec tous les controls-->
 					<Border Margin="0,0,0,0"
 					        BorderThickness="2">
-						<StackPanel Width="210" Margin="0,0,20,0"
+						<StackPanel Width="210" 
+						            Margin="0,0,40,0"
 						            Background="{DynamicResource DarkGrey}"
 						            HorizontalAlignment="Right" Spacing="10"
 						            Classes="NewBloc"
@@ -135,6 +165,14 @@
 								<!-- NE RIEN METTRE ICI SAUF DANS DES TEST tkt :) -->
 					</StackPanel>
 				</ScrollViewer>
+				
+				<StackPanel x:Name="NotificationPanel"
+				            VerticalAlignment="Bottom" 
+				            HorizontalAlignment="Right"
+				            Spacing="5"
+				            Margin="0,0,20,20" Grid.Row="1">
+					
+				</StackPanel>
 			</Grid>
 		</Grid>
 	</Grid>
