@@ -105,8 +105,6 @@ public class SavingService
         if (topLevel == null)
             throw new Exception($"No topLevel : {visual}");
         
-        
-        
         var folder = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
         {
             Title = "Open Folder",

@@ -32,7 +32,7 @@ public partial class PageViewModel : ViewModelBase
     [ObservableProperty] public bool isSave = false;
 
     [ObservableProperty] public string currDir = "C:";
-    [ObservableProperty] public string folderName = "default";
+    [ObservableProperty] public string folderName = "no folder open";
 
     private Panel? notificationPanel;
     private Panel? userViewPanel;
@@ -142,8 +142,10 @@ public partial class PageViewModel : ViewModelBase
     }
     public async Task UpdateCurrDir(bool quickUpdate=false)
     {
-        if (hierarchyPanel == null || LastSavePath == string.Empty || userViewPanel == null)
+        if (hierarchyPanel == null || userViewPanel == null)
+        {
             return;
+        }
 
         if (!quickUpdate)
         {
