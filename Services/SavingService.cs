@@ -27,9 +27,10 @@ public class SavingService
      * Quand on load ou qu'on fais une nouvelle page
      * faut demander au user si il veut save 
      */
-  
+    
     public static async Task<string> Load(Visual visual, bool quickLoad=false, string path="")
     {
+       
         if (quickLoad && (path == string.Empty || path == ""))
         {
             return string.Empty;
@@ -95,6 +96,30 @@ public class SavingService
         }
         
         return path;
+    }
+    
+    public static async Task<string> LoadFolder(Visual visual)
+    {
+        // On get la page en entiere (techniquement y'en a toujours une mais on sait jamais)
+        var topLevel = TopLevel.GetTopLevel(visual);
+        if (topLevel == null)
+            throw new Exception($"No topLevel : {visual}");
+        
+        
+        
+        var folder = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+        {
+            Title = "Open Folder",
+            AllowMultiple = false
+        });
+
+        if (folder.Count >= 1)
+        {
+            Console.WriteLine(folder[0].Path);
+            return folder[0].Path.ToString();
+        }
+        
+        return string.Empty;
     }
     
 
@@ -288,6 +313,7 @@ public class SavingService
                 // On store là ou le user save son fichier
                 filePath = file.Path.ToString();
                 
+                
                 await using var stream = await file.OpenWriteAsync();
                 using var streamWriter = new StreamWriter(stream);
                 
@@ -301,7 +327,6 @@ public class SavingService
             if (filePath == string.Empty)
             {
                 string result = await Save(visual, false, string.Empty);
-                Console.WriteLine( result);
                 return result;
             }
             
@@ -318,6 +343,7 @@ public class SavingService
             {
                 // Si jamais ça foire, genre le path est pas valid on arrette et on fais une save classique
                 Console.WriteLine("[ERROR] : " + ex.Message);
+                return string.Empty;
             }
         }
 

@@ -3,8 +3,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="800"
-             x:Class="Maximatron.Controls.HierarchyControl">
-	<Grid Background="{DynamicResource DarkGrey}" Grid.Column="0"
+             x:Class="Maximatron.Controls.HierarchyControl"
+             xmlns:vm="using:Maximatron.ViewModels"
+             x:DataType="vm:PageViewModel">
+	
+	<UserControl.Styles>
+		<Style Selector="Border.Hierarchy">
+			<Setter Property="Margin" Value="10,4"/>
+			<Setter Property="BorderBrush" Value="White"/>
+			<Setter Property="BorderThickness" Value="0,0,0,2"/>
+			<Setter Property="Padding" Value="5,7"></Setter>
+			<Setter Property="Transitions">
+				<Transitions>
+					<BrushTransition Property="BorderBrush" Duration="0:0:.1"></BrushTransition>
+				</Transitions>
+			</Setter>
+		</Style>
+		
+		<Style Selector="Border.Hierarchy:pointerover">
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemAccentColor}"></Setter>
+		</Style>
+	</UserControl.Styles>
+	<Grid Background="{DynamicResource DarkGrey}"
 	      RowDefinitions="Auto, Auto, *">
 
 		<Label Grid.Row="0" HorizontalAlignment="Center" Margin="5,10,5,0"
@@ -12,33 +32,12 @@
 
 		<!-- Path -->
 		<TextBlock Grid.Row="1" Margin="10,30"
-			TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="14">
-			> Home > ...
-		</TextBlock>
+			TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="14" Text="{Binding FolderName}"
+			TextWrapping="NoWrap"/>
 
 		<!-- User Pages -->
-		<StackPanel Grid.Row="2" Margin="15,40,0,0">
-
-			<!-- User Pages templates -->
-			<!--PS c'est pas tres fontionnel-->
-			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
-				> Random page
-			</TextBlock>
-			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
-				> Random page
-			</TextBlock>
-			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
-				> Random page
-			</TextBlock>
-			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
-				> Random page
-			</TextBlock>
-			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
-				> Random page
-			</TextBlock>
-			<TextBlock TextDecorations="Underline" Foreground="WhiteSmoke" FontSize="16">
-				> Random page
-			</TextBlock>
-		</StackPanel>
+		<StackPanel Grid.Row="2"
+		            x:Name="panel"
+		            Margin="15,40,15,0"/>
 	</Grid>
 </UserControl>

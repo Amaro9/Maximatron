@@ -24,7 +24,7 @@
 		<Grid Grid.Row="1" ColumnDefinitions="300, *" Background="{DynamicResource DarkGrey}">
 
 			<!-- HIERARCHY -->
-			<controls:HierarchyControl Grid.Column="0"></controls:HierarchyControl>
+			<controls:HierarchyControl Grid.Column="0" x:Name="hierarchyControl"/>
 			
 			<!-- VIEW -->
 			<Grid Grid.Column="1" Margin="0,10,0,0"
@@ -37,7 +37,6 @@
 					        BorderThickness="0,0,0,3"
 					        VerticalAlignment="Center"
 					        Margin="10" Padding="0,0,0,10">
-							
 							<Grid ColumnDefinitions="*,2*"
 							      VerticalAlignment="Center">
 								
@@ -96,6 +95,7 @@
 									        Classes="topBar"
 									        ContextFlyout=""
 									        Margin="10,0,0,0"
+									        Padding="4,4"
 									        HotKey="Ctrl+o">
 										<StackPanel>
 											<ToolTip.Tip>
@@ -105,6 +105,23 @@
 												</StackPanel>
 											</ToolTip.Tip>
 											<Svg Path="/Assets/load.svg"></Svg>
+										</StackPanel>
+									</Button>
+									
+									<Button Height="50" Width="50" 
+									        Click="Button_LoadFolder"
+									        Classes="topBar"
+									        ContextFlyout=""
+									        Margin="10,0,0,0"
+									        HotKey="Ctrl+shift+o" Padding="5">
+										<StackPanel>
+											<ToolTip.Tip>
+												<StackPanel>
+													<TextBlock FontSize="18">Load Folder</TextBlock>
+													<TextBlock FontSize="12">Ctrl + shift + o</TextBlock>
+												</StackPanel>
+											</ToolTip.Tip>
+											<Svg Path="/Assets/folder.svg"></Svg>
 										</StackPanel>
 									</Button>
 									
@@ -123,7 +140,6 @@
 										</ToolTip.Tip>
 									</Button>
 								</WrapPanel>
-								
 							</Grid>
 						</Border>
 					
@@ -153,40 +169,66 @@
 							                           ImagePath="../Assets/list.svg"
 							                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
 							                           Click="AddUserObject"
-							                           Tag="LIST"/>
+							                           Tag="LIST"
+							                           HotKey="ctrl+l">
+									<ToolTip.Tip>
+										<StackPanel>
+											<TextBlock FontSize="18">Add a list</TextBlock>
+											<TextBlock FontSize="12">once place in the page</TextBlock>
+											<TextBlock FontSize="12">right click to add object in it.</TextBlock>
+											<TextBlock FontSize="12">ctrl+l</TextBlock>
+										</StackPanel>
+									</ToolTip.Tip>
+							</controls:UserInteractable>
 							<controls:UserInteractable Classes="Item" TextContent="FIELD"
 							                           Name="FieldBtn"
 							                           ImagePath="../Assets/field.svg"
 							                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
 							                           Click="AddUserObject"
-							                           Tag="FIELD" />
+							                           Tag="FIELD"
+							                           HotKey="ctrl+t">
+								<ToolTip.Tip>
+									<StackPanel>
+										<TextBlock FontSize="18">Add a note</TextBlock>
+										<TextBlock FontSize="12">ctrl+t</TextBlock>
+									</StackPanel>
+								</ToolTip.Tip>
+							</controls:UserInteractable>
 							<controls:UserInteractable Classes="Item" TextContent="CHECKBOX"
 							                           Name="CheckBoxBtn"
 							                           ImagePath="../Assets/checkMark.svg"
 							                           Classes.Open="{Binding IsNewBlocPopupVisible}" 
 							                           Click="AddUserObject"
-							                           Tag="CHECKBOX"/>
+							                           Tag="CHECKBOX"
+							                           HotKey="ctrl+h">
+								<ToolTip.Tip>
+									<StackPanel>
+										<TextBlock FontSize="18">Add a checkbox</TextBlock>
+										<TextBlock FontSize="12">ctrl+h</TextBlock>
+									</StackPanel>
+								</ToolTip.Tip>
+							</controls:UserInteractable>
 						</StackPanel>
 					</Border>
 				</StackPanel>
 				
 				<!-- User Page View -->
-				<ScrollViewer Grid.Row="1" Background="{DynamicResource White}"
-				              VerticalAlignment="Stretch"
-				              VerticalScrollBarVisibility="Visible">
-					<StackPanel x:Name="UserViewStackPanel" Spacing="15" Margin="100, 20">
-								<!-- Les element sont ajouter dynamiquement par le user-->
-								<!-- NE RIEN METTRE ICI SAUF DANS DES TEST tkt :) -->
-					</StackPanel>
-				</ScrollViewer>
+				<Grid Grid.Row="1" ColumnDefinitions=".05*,*,.05*" Background="{DynamicResource White}">
+					<ScrollViewer Grid.Column="1" Padding="0,0,50,0"
+					              VerticalAlignment="Stretch"
+					              VerticalScrollBarVisibility="Visible">
+						<StackPanel x:Name="UserViewStackPanel" Spacing="15" Margin="0, 40">
+									<!-- Les element sont ajouter dynamiquement par le user-->
+									<!-- NE RIEN METTRE ICI SAUF DANS DES TEST tkt :) -->
+						</StackPanel>
+					</ScrollViewer>
+				</Grid>
 				
 				<StackPanel x:Name="NotificationPanel"
 				            VerticalAlignment="Bottom" 
 				            HorizontalAlignment="Right"
 				            Spacing="5"
-				            Margin="0,0,20,20" Grid.Row="1">
-					
-				</StackPanel>
+				            Margin="0,0,20,20" Grid.Row="1"/>
 			</Grid>
 		</Grid>
 	</Grid>

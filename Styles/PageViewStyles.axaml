@@ -16,8 +16,6 @@
 			<Setter Property="CornerRadius" Value="10"/>
 			<Setter Property="BorderBrush" Value="{DynamicResource DarkGrey}"></Setter>
 			<Setter Property="BorderThickness" Value="1"></Setter>
-
-			
 		</Style>
 		
 		<Style Selector="TextBox.Field:focus /template/ Border">

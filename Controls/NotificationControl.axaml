@@ -2,12 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Maximatron.Controls">
     <Design.PreviewWith>
+        <StackPanel Margin="50">
         <controls:NotificationControl />
+            
+        </StackPanel>
     </Design.PreviewWith>
     
     <Style Selector="controls|NotificationControl">
         <!-- Set Defaults -->
-        <!-- TODO : fermer la notif quand on click sur le X-->
+        <Setter Property="BorderColor" Value="Green"></Setter>
         <Setter Property="Template">
             <ControlTemplate>
                 <Border x:Name="Parent"
@@ -15,13 +18,8 @@
                         BorderBrush="{TemplateBinding BorderColor}"
                         BorderThickness="0,5,0,0"
                         Background="{DynamicResource LightGrey}">
-                    <StackPanel x:Name="ein" Orientation="Horizontal" Spacing="20">
-                        
-                        <!-- <Button HorizontalAlignment="Left"  -->
-                        <!--         Height="35" Width="40" -->
-                        <!--         VerticalContentAlignment="Center" -->
-                        <!--         HorizontalContentAlignment="Center" -->
-                        <!--         FontSize="18" Padding="0">X</Button> -->
+
+                    <StackPanel Orientation="Horizontal" Spacing="20">
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock FontSize="14" Text="{TemplateBinding Title}"/>
                             <TextBlock FontSize="8" Text="{TemplateBinding Description}"/>
@@ -33,6 +31,7 @@
                         <TextBlock FontSize="12">Click to close</TextBlock>
                     </ToolTip.Tip>
                 </Border>
+                
             </ControlTemplate>
             
         </Setter>

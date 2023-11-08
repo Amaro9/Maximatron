@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Maximatron.Controls;
 using Maximatron.Services;
 using Maximatron.ViewModels;
@@ -14,26 +15,27 @@ namespace Maximatron;
 public partial class PageView : Window
 {
     public PageViewModel model;
-    public static string PATH = "lastSavePath.txt"; 
     public PageView()
     {
         InitializeComponent();
         DataContext = new PageViewModel();
         model = (PageViewModel)DataContext!;
         
-        model.Init(UserViewStackPanel, NotificationPanel);
+        model.Init(UserViewStackPanel, NotificationPanel, hierarchyControl.panel);
         
-        Load();
+        StartLoad();
     }
-    public async void Load()
+    public async void StartLoad()
     {
-        model.LastSavePath = SavingService.ReadStringFromFile(PATH);
+        model.LastSavePath = SavingService.ReadStringFromFile(PageViewModel.PATH);
         await SavingService.Load(this,true, model.LastSavePath);
         model.GetDocName();
+        await model.UpdateCurrDir(true);
         
         if (model.LastSavePath != string.Empty)
         {
             model.AddNewNotification("file load successfuly", "(" + model.DocName + ")", new NotificationBrushColor().Success);
+            model.SetSaveState(true);
         }
         else
         {
@@ -43,26 +45,27 @@ public partial class PageView : Window
     private async void Button_Save(object? sender, RoutedEventArgs e)
     {
         model.LastSavePath = await SavingService.Save(this, false, model.LastSavePath);
-        SavingService.SaveStringToFile(PATH, model.LastSavePath);
+        SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
         model.GetDocName();
+        await model.UpdateCurrDir(true);
 
         if (model.LastSavePath != string.Empty)
         {
             model.AddNewNotification("file saved successfuly", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
-        }
-        else
-        {
-            model.AddNewNotification("Save Cancel", String.Empty, new NotificationBrushColor().Warning);
+            model.SetSaveState(true);
         }
     }
     private async void Button_QuickSave(object? sender, RoutedEventArgs e)
     {
         model.LastSavePath = await SavingService.Save(this, true, model.LastSavePath);
-        SavingService.SaveStringToFile(PATH, model.LastSavePath);
+        SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
         model.GetDocName();
+        await model.UpdateCurrDir(true);
+
         if (model.LastSavePath != string.Empty)
         {
             model.AddNewNotification("file saved successfuly", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
+            model.SetSaveState(true);
         }
         else
         {
@@ -72,18 +75,24 @@ public partial class PageView : Window
     private async void Button_Load(object? sender, RoutedEventArgs e)
     {
         model.LastSavePath = await SavingService.Load(this);
-        SavingService.SaveStringToFile(PATH, model.LastSavePath);
+        SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
         model.GetDocName();
         
         if (model.LastSavePath != string.Empty)
         {
             model.AddNewNotification("file load successfuly", "(" + model.DocName + ")", new NotificationBrushColor().Success);
+            model.SetSaveState(true);
         }
         else
         {
             model.AddNewNotification("loading Cancel", string.Empty, new NotificationBrushColor().Warning);
         }
     }
+    private async void Button_LoadFolder(object? sender, RoutedEventArgs e)
+    {
+        await model.UpdateCurrDir();
+    }
+    
 
     private void AddUserObject(object? sender, RoutedEventArgs e)
     {
@@ -91,9 +100,7 @@ public partial class PageView : Window
         if (sender is not UserInteractable)
             throw new Exception($"[ERROR] : {sender} is not a UserInteractable !");
 
-
-        if (!model.DocName.Contains("*"))
-            model.DocName += "*";
+        model.SetSaveState(false);
         UserInteractable control = (UserInteractable)sender;
         UserViewStackPanel.Children.Add(GetSpawnObject(control));
     }
@@ -280,8 +287,9 @@ public partial class PageView : Window
             Console.WriteLine($"[ERROR] : {GetUserObject(sender)} n'est pas un panel");
             return;
         }
+        // tout est bon, on peut add le control dans la liste
         panel.Children.Add(GetSpawnObject(control));
-
+        UnsavePage(panel);
     }
     private static void RemoveControl(object? sender, PointerPressedEventArgs e)
     {
@@ -301,6 +309,8 @@ public partial class PageView : Window
             return;
         
         panel.Children.Remove(userObject);
+        UnsavePage(panel);
+
     }
     
 
@@ -316,7 +326,9 @@ public partial class PageView : Window
         if (textBox == null)
             return;
         
-        textBox?.Paste();
+        textBox.Paste();
+        UnsavePage(textBox);
+
     }
 
     private static void CopyText(object? sender, PointerPressedEventArgs e)
@@ -348,6 +360,7 @@ public partial class PageView : Window
         
         // On recup cut le contenu 
         textBox.Cut();
+        UnsavePage(textBox);
     }
 
     private static TextBox? GetTextbox(object? sender)
@@ -388,5 +401,13 @@ public partial class PageView : Window
         Console.WriteLine($"[ERROR] : {sender} is not a control");
         return null;
     }
-    
+
+    private static void UnsavePage(Control control)
+    {
+        PageView view = (PageView)control.GetVisualRoot()!;
+        PageViewModel model = (PageViewModel)view.DataContext!; 
+        model.SetSaveState(false);
+    }
+
+
 }
