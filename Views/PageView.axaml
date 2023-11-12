@@ -11,8 +11,7 @@
         Title="PageView"
 		Background="{DynamicResource White}"
 		TransparencyLevelHint="AcrylicBlur"
-		ExtendClientAreaToDecorationsHint="True"
-        Icon="/Assets/MaximatronLogo.ico">
+		ExtendClientAreaToDecorationsHint="True">
 	
 	<Grid RowDefinitions="auto, *">
 		<!-- Title bar -->

@@ -27,7 +27,7 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <ContentPresenter Content="{TemplateBinding Content}"/>
+                <TextBox x:Name="PART_TextField"></TextBox>
             </ControlTemplate>
         </Setter>
     </Style>
@@ -44,7 +44,8 @@
 
                     <StackPanel>
                         <!--Card Title-->
-                        <TextBox Classes="Field" BorderThickness="0" Watermark="LIST"
+                        <TextBox x:Name="PART_TextField"
+                                 Classes="Field" BorderThickness="0" Watermark="LIST"
                                  FontSize="28" Margin="0" Padding="0"
                                  AcceptsReturn="True" AcceptsTab="False"
                                  Text="{Binding Title}"
@@ -67,7 +68,8 @@
                         BorderBrush="{DynamicResource SystemAccentColor}"
                         BorderThickness="10,1,1,1" 
                         CornerRadius="0,0,20,0">
-                    <TextBox Classes="Field" BorderThickness="0" Watermark="Enter text..."
+                    <TextBox x:Name="PART_TextField"
+                             Classes="Field" BorderThickness="0" Watermark="Enter text..."
                              AcceptsReturn="True" AcceptsTab="False"
                              TextWrapping="Wrap"
                              ContextMenu="{TemplateBinding ContextMenuTest}"
@@ -87,7 +89,8 @@
                             <CheckBox CornerRadius="0" HorizontalAlignment="Left" 
                                       Margin="10,0,0,0"
                                       IsChecked="{Binding IsCheck}"/>
-                            <TextBox Classes="Field" BorderThickness="0" Watermark="Something important"
+                            <TextBox x:Name="PART_TextField"
+                                     Classes="Field" BorderThickness="0" Watermark="Something important"
                                      FontSize="15"
                                      AcceptsReturn="True" AcceptsTab="False"
                                      VerticalAlignment="Center"

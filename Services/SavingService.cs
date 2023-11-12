@@ -30,7 +30,7 @@ public class SavingService
     
     public static async Task<string> Load(Visual visual, bool quickLoad=false, string path="")
     {
-       
+      
         if (quickLoad && (path == string.Empty || path == ""))
         {
             return string.Empty;
@@ -40,9 +40,12 @@ public class SavingService
         string filePath = path.Replace("file:///", "");
         
         // On get la page en entiere (techniquement y'en a toujours une mais on sait jamais)
-        var topLevel = TopLevel.GetTopLevel(visual);
+        var topLevel = (PageView)TopLevel.GetTopLevel(visual)!;
         if (topLevel == null)
             throw new Exception($"No topLevel : {visual}");
+
+        // We are loading a new file, so we need to restart the pageView init
+        topLevel.init = false;
 
         
         // On get le UserViewStackPanel (là ou tous les truc que le user creer sont localiser)
@@ -59,6 +62,9 @@ public class SavingService
                 // On converti la string en info que l'on vas pouvoir utiliser
                 List<UserObjectData> save = LoadInfoFromFile(fileContent);
                 CreateUserObjectFromSave(userViewPanel, save);
+                
+                topLevel.FinishLoad();
+                
                 return path;
             }
             catch (Exception ex)
@@ -92,6 +98,8 @@ public class SavingService
             filePath = filePath.Replace("file:///", "");
             // Debug.
             Console.WriteLine($"[INFO] file load at : { filePath}");
+            topLevel.FinishLoad();
+
             return filePath;
         }
         
@@ -124,40 +132,39 @@ public class SavingService
     private static List<UserObjectData> LoadInfoFromFile(string input)
     {
 
-        // Check qu'on a bien des info
+        // Check if there is info in input
         if (input == string.Empty)
         {
-            Console.WriteLine($"[ERROR] : nothing in save file !");
+            Console.WriteLine($"[WARNING] : nothing in save file !");
             return new List<UserObjectData>();
         }
 
         List<UserObjectData> dataResults = new List<UserObjectData>();
         
-        // On seppart chaque ligne 
+        // We split each line (each one represant a control)
         string[] infoPart = input.Split("<-!->");
         foreach (var row in infoPart)
         {
-            // Creation des data que l'on vas reatribuer plus tard
+            // Creating new userObject data, we will init them later
             UserObjectData data = new UserObjectData();
             
-            // On séppart chaque part partie de ça colonne
+            // we split each colunm (each one represant a property of a control)
             string[] columns = row.Split("|");
             
             foreach (string column in columns)
             {
                 
-                // On enleve les espaces
+                // We get rid of the blank
                 string result = column.Trim();
                 
-                // On check pour savoir a quelle partie de l'info on est
-                
+                // Check of the current culunm
                 if (result.Contains("[Class]"))
                 {
                     var info = result.Replace("[Class]", "");
                     info = info.Trim();
-                    // Check si ce que l'on lit est valid 
-                    // Ps : lors d'un load y'aura tjrs une colonne avec rien dedans c'est 
-                    //      aussi pour ça qu'on fais ça :)
+                    // Check if what we're reading is right
+                    // Ps : When loading, there is a thing with nothing in it
+                    //      this is a flag for the end of the file
                     if (info == string.Empty)
                     {
                         break;
@@ -178,7 +185,7 @@ public class SavingService
                     data.TextContent = info.Trim();
                 }
                 
-                if (result.Contains("[IsCheck]")) // A remplace avec IsChecked
+                if (result.Contains("[IsCheck]"))
                 {
                     var info = result.Replace("[IsCheck]", "");
                     // on converti la string en bool.
@@ -188,15 +195,17 @@ public class SavingService
                 if (result.Contains("[IsChild]"))
                 {
                     var info = result.Replace("[IsChild]", "");
-                    // on converti la string en bool.
+                    // Converte bool in string (true -> checked | false -> unchecked)
                     data.IsChild = info.Contains("True");
                 }
+                
             }
             
             // Debug
             var finalResult = "[Class] " + data.Class + "| [Title] " + data.Title + "| [Text] " + data.TextContent + "| [IsCheck] " + data.IsChecked;
             Console.WriteLine($"[INFO] : {finalResult}");
             
+            // Adding the result to the data
             dataResults.Add(data);
         }
 
@@ -205,23 +214,29 @@ public class SavingService
 
     private static void CreateUserObjectFromSave(Panel? panel, List<UserObjectData>? save)
     {
-        // On commence par check que les infos que l'on reçoit sont bien valide
-        if (panel == null || save == null || save.Count == 0)
+        if (panel == null)
+            return;
+        
+        // we clear the userView even if there is nothing in save file 
+        // (if there is nothing, this is a page with nothing in it)
+        panel.Children.Clear();
+        
+        // we start by cheking if we have some infos
+        if (save == null || save.Count == 0)
         {
             return;
         }
         
-        // au cas z'ou on clear les enfant du panel, on vas les recree avec la save
-        panel.Children.Clear();
 
-        // C'est une var qui permet de savoir qu'elle est le derniere liste 
-        // Pour savoir ou faudra add les control si ce sont des child.
+        // This var is to keep track of the last valid list
+        // This will be for when adding child in list 
+        // The default value is the userView panel in case there are some issues
         Panel lastList = panel;
 
         // On loop dans les control des la save
         foreach (UserObjectData info in save)
         {
-            UserObject? userObject;
+            UserObject? userObject = null;
             UserObjectModel? model;
             
             switch (info.Class)
@@ -237,8 +252,8 @@ public class SavingService
                     }
                     else
                     {
-                        // c'est deja une sous liste, il faut pas lui donner
-                        // la possibiliter de faire des sous liste dans des sous listes
+                        // if this list is already a child of a list, then we are disalowing the ability
+                        // of making a list inside this one (otherwise, we can have list in list in list etc...)
                         userObject = PageView.CreateList(false);
                     }
                     break;
@@ -246,11 +261,11 @@ public class SavingService
                     userObject = PageView.CreateCheckBox();
                     break;
                 
-                default: // quand on load une save y'a toujours un element vide a la fin du coup il sera la dans le switch
-                    return;
+                default: // The default case is trigger when we reach the end of the save data
+                    break;
             }
             
-            // On set le model
+            // We set the view model
             model = (UserObjectModel?)userObject.DataContext;
 
 
@@ -260,22 +275,22 @@ public class SavingService
             if (model == null)
                 throw new Exception($"No UserObjectModel in : {userObject}"); 
             
-            // On initialise le userObject
+            // we init the user object
             model.Title = info.Title;
             model.TextContent = info.TextContent;
             model.IsCheck = info.IsChecked;
 
             if (info.IsChild)
             {
+                // this is a child, so we add it to the lasted valid parent
                 lastList.Children.Add(userObject);
             }
             else
             {
-                // On ajout le userObject a la vue
+                // we add the panel the the main view
                 panel.Children.Add(userObject);
             }
-            
-        }
+        }            
     }
 
     public static async Task<string> Save(Visual visual, bool quickSave, string savePath)

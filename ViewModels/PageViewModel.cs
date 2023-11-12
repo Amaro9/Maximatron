@@ -19,7 +19,7 @@ namespace Maximatron.ViewModels;
 
 public partial class PageViewModel : ViewModelBase
 {
-    private bool init;
+    public bool init;
     public static string PATH = "lastSavePath.txt"; 
     public static string FolderSavePATH = "lastFolderSavePath.txt"; 
     
@@ -136,6 +136,9 @@ public partial class PageViewModel : ViewModelBase
 
     public void SetSaveState(bool newSate)
     {
+        if (!init)
+            return;
+        
         IsSave = newSate;
         if (!DocName.Contains("*"))
             DocName += IsSave ? "" : "*"; // Si le doc est pas save alors on ajoute une * apres le nom du doc

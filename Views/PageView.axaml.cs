@@ -1,20 +1,21 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Maximatron.Controls;
 using Maximatron.Services;
 using Maximatron.ViewModels;
-
-// ReSharper disable All
 
 namespace Maximatron;
 
 public partial class PageView : Window
 {
     public PageViewModel model;
+    public bool init;
     public PageView()
     {
         InitializeComponent();
@@ -22,10 +23,28 @@ public partial class PageView : Window
         model = (PageViewModel)DataContext!;
         
         model.Init(UserViewStackPanel, NotificationPanel, hierarchyControl.panel);
-        
         StartLoad();
+
+        FinishLoad();
     }
-    public async void StartLoad()
+
+    public void FinishLoad()
+    {
+        // We are doing a timer of 1sec to let everything init properly
+        // The async methode are messing everything so the timer make sure that we are after everything
+        var timer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(1)
+        };
+        timer.Tick += (sender, e) =>
+        {
+            init = true;
+            timer.Stop();
+        };
+        timer.Start();
+
+    }
+    private async Task StartLoad()
     {
         model.LastSavePath = SavingService.ReadStringFromFile(PageViewModel.PATH);
         await SavingService.Load(this,true, model.LastSavePath);
@@ -34,7 +53,7 @@ public partial class PageView : Window
         
         if (model.LastSavePath != string.Empty)
         {
-            model.AddNewNotification("file load successfuly", "(" + model.DocName + ")", new NotificationBrushColor().Success);
+            model.AddNewNotification("file load successfully", "(" + model.DocName + ")", new NotificationBrushColor().Success);
             model.SetSaveState(true);
         }
         else
@@ -51,7 +70,7 @@ public partial class PageView : Window
 
         if (model.LastSavePath != string.Empty)
         {
-            model.AddNewNotification("file saved successfuly", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
+            model.AddNewNotification("file saved successfully", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
             model.SetSaveState(true);
         }
     }
@@ -60,11 +79,12 @@ public partial class PageView : Window
         model.LastSavePath = await SavingService.Save(this, true, model.LastSavePath);
         SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
         model.GetDocName();
+        
         await model.UpdateCurrDir(true);
 
         if (model.LastSavePath != string.Empty)
         {
-            model.AddNewNotification("file saved successfuly", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
+            model.AddNewNotification("file saved successfully", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
             model.SetSaveState(true);
         }
         else
@@ -80,7 +100,7 @@ public partial class PageView : Window
         
         if (model.LastSavePath != string.Empty)
         {
-            model.AddNewNotification("file load successfuly", "(" + model.DocName + ")", new NotificationBrushColor().Success);
+            model.AddNewNotification("file load successfully", "(" + model.DocName + ")", new NotificationBrushColor().Success);
             model.SetSaveState(true);
         }
         else
@@ -153,14 +173,21 @@ public partial class PageView : Window
         removeMenuItem.PointerPressed += RemoveControl;
         removeMenuItem.Background = Brushes.Brown;
         contextMenu.Items.Add(removeMenuItem);
-        
-        // Event Test
-        MenuItem test = new MenuItem { Header = "[In Editor] Get Template Control" };
-        test.PointerPressed += PrintTemplateControl;
-        contextMenu.Items.Add(test);
 
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
+        
+        // Set event for when text is modify
+        userObject.init += (sender, args) =>
+        {
+            if (userObject.partTextField == null)
+                return;
+            
+            userObject.partTextField.TextChanged += (o, eventArgs) =>
+            {
+                UnsavePage(userObject);
+            };
+        };
         
         // On return le userObject fini
         return userObject;
@@ -210,15 +237,21 @@ public partial class PageView : Window
         removeMenuItem.PointerPressed += RemoveControl;
         removeMenuItem.Background = Brushes.Brown;
         contextMenu.Items.Add(removeMenuItem);
-        
-        // Event Test
-        MenuItem test = new MenuItem { Header = "[In Editor] Get Template Control" };
-        test.PointerPressed += PrintTemplateControl;
-        contextMenu.Items.Add(test);
-
 
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
+        
+        // Set event for when text is modify
+        userObject.init += (sender, args) =>
+        {
+            if (userObject.partTextField == null)
+                return;
+            
+            userObject.partTextField.TextChanged += (o, eventArgs) =>
+            {
+                UnsavePage(userObject);
+            };
+        };
         
         // On return le userObject fini
         return userObject;
@@ -255,28 +288,30 @@ public partial class PageView : Window
         removeMenuItem.Background = Brushes.Brown;
         contextMenu.Items.Add(removeMenuItem);
         
-        // Event Test
-        MenuItem test = new MenuItem { Header = "[In Editor] Get Template Control" };
-        test.PointerPressed += PrintTemplateControl;
-        contextMenu.Items.Add(test);
-
-
         // On assigne le context menu a la textbox
         userObject.ContextMenuTest = contextMenu;
+        
+        // Set event for when text is modify
+        userObject.init += (sender, args) =>
+        {
+            if (userObject.partTextField == null)
+                return;
+            
+            userObject.partTextField.TextChanged += (o, eventArgs) =>
+            {
+                UnsavePage(userObject);
+            };
+        };
         
         // On return le userObject fini
         return userObject;
     }
     
-    
-    
-    
     private static void PrintTemplateControl(object? sender, PointerPressedEventArgs e)
     {
         Console.WriteLine($"[INFO] : TemplateControl is {GetUserObject(sender)?.Classes[0]}");
     }
-
-
+    
     private static void AddControlInList(object? sender, PointerPressedEventArgs e)
     {
         if (sender is not Control control) return;
@@ -304,13 +339,11 @@ public partial class PageView : Window
             return;
         
         // On recup et test le parent pour voir si c'est un panel
-        Panel? panel = (Panel)userObject.Parent;
+        Panel? panel = (Panel)userObject.Parent!;
         if (panel == null)
             return;
         
         panel.Children.Remove(userObject);
-        UnsavePage(panel);
-
     }
     
 
@@ -327,8 +360,6 @@ public partial class PageView : Window
             return;
         
         textBox.Paste();
-        UnsavePage(textBox);
-
     }
 
     private static void CopyText(object? sender, PointerPressedEventArgs e)
@@ -360,20 +391,15 @@ public partial class PageView : Window
         
         // On recup cut le contenu 
         textBox.Cut();
-        UnsavePage(textBox);
     }
 
     private static TextBox? GetTextbox(object? sender)
     {
-        if (sender is Control control)
-        {
-            // on get la textBox
-            // PS : on prend 3 parents au dessus pour avoir la textbox 
-            var textBox = (TextBox?)(control.Parent?.Parent?.Parent);
-            return textBox;
-        }
-
-        return null;
+        if (GetUserObject(sender) == null)
+            return null;
+        
+        TextBox? textBox = GetUserObject(sender)!.partTextField;
+        return textBox;
     }
 
     private static UserObject? GetUserObject(object? sender) // On remonte les parents de l'obj jusqu'a trouver un UserObject
@@ -405,6 +431,11 @@ public partial class PageView : Window
     private static void UnsavePage(Control control)
     {
         PageView view = (PageView)control.GetVisualRoot()!;
+        if (!view.init)
+        {
+            return;
+        }
+
         PageViewModel model = (PageViewModel)view.DataContext!; 
         model.SetSaveState(false);
     }
