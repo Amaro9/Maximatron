@@ -23,16 +23,15 @@ public struct UserObjectData
 
 public class SavingService
 {
-    /* TODO :
-     * Quand on load ou qu'on fais une nouvelle page
-     * faut demander au user si il veut save 
-     */
-    
+    public static FilePickerFileType MaximatronFiles { get; } = new("Maximatron document")
+    {
+        Patterns = new[] { "*.maximatron"},
+    };
     public static async Task<string> Load(Visual visual, bool quickLoad=false, string path="")
     {
-      
         if (quickLoad && (path == string.Empty || path == ""))
         {
+            Console.WriteLine("[ERROR]: trying to quickLoad without a path");
             return string.Empty;
         }
         
@@ -73,29 +72,30 @@ public class SavingService
                 return path;
             }
         }
-
+        
         
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
             Title = "Open Text File",
             AllowMultiple = false,
-            FileTypeFilter = new [] { FilePickerFileTypes.TextPlain } 
+            FileTypeFilter = new [] { MaximatronFiles, FilePickerFileTypes.TextPlain, } 
             
         });
 
         if (files.Count >= 1)
         {
-            // On recupe le fichier et on store son content dans une string
+            // Get the file then store it in a string
             await using var stream = await files[0].OpenReadAsync();
             using var streamReader = new StreamReader(stream);
             var fileContent = await streamReader.ReadToEndAsync();
             
-            // On converti la string en info que l'on vas pouvoir utiliser
+            // We convert the string into info that we can use later
             List<UserObjectData> save = LoadInfoFromFile(fileContent);
             CreateUserObjectFromSave(userViewPanel, save);
 
             filePath = files[0].Path.ToString();
             filePath = filePath.Replace("file:///", "");
+            
             // Debug.
             Console.WriteLine($"[INFO] file load at : { filePath}");
             topLevel.FinishLoad();
@@ -129,7 +129,7 @@ public class SavingService
     }
     
 
-    private static List<UserObjectData> LoadInfoFromFile(string input)
+    private static List<UserObjectData> LoadInfoFromFile(string input, bool debug = false)
     {
 
         // Check if there is info in input
@@ -200,10 +200,13 @@ public class SavingService
                 }
                 
             }
-            
+
             // Debug
-            var finalResult = "[Class] " + data.Class + "| [Title] " + data.Title + "| [Text] " + data.TextContent + "| [IsCheck] " + data.IsChecked;
-            Console.WriteLine($"[INFO] : {finalResult}");
+            if (debug)
+            {
+                var finalResult = "[Class] " + data.Class + "| [Title] " + data.Title + "| [Text] " + data.TextContent + "| [IsCheck] " + data.IsChecked;
+                Console.WriteLine($"[INFO] : {finalResult}");
+            }
             
             // Adding the result to the data
             dataResults.Add(data);
@@ -238,7 +241,7 @@ public class SavingService
         {
             UserObject? userObject = null;
             UserObjectModel? model;
-            
+
             switch (info.Class)
             {
                 case "BasicField":
@@ -262,7 +265,7 @@ public class SavingService
                     break;
                 
                 default: // The default case is trigger when we reach the end of the save data
-                    break;
+                    return;
             }
             
             // We set the view model
@@ -305,7 +308,6 @@ public class SavingService
         Panel? userViewPanel = topLevel.FindControl<Panel>("UserViewStackPanel");
         if (userViewPanel == null)
             throw new Exception($"No UserViewStackPanel : {topLevel}");
-
         
         string filePath = savePath;
         
@@ -313,11 +315,12 @@ public class SavingService
         if (!quickSave)
         {
             // On creer la fenetre de dialogue
+
             var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = "Save Text File",
                 SuggestedFileName = "New Document",
-                FileTypeChoices = new [] { FilePickerFileTypes.TextPlain }
+                FileTypeChoices = new [] { MaximatronFiles, FilePickerFileTypes.TextPlain,  }
                 
             });
             

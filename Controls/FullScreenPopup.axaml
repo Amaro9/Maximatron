@@ -1,0 +1,43 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Maximatron.Controls">
+    <Design.PreviewWith>
+        <controls:FullScreenPopup />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|FullScreenPopup">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Grid RowDefinitions="*,Auto,*" ColumnDefinitions="*,Auto,*">
+                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="20"
+                            Background="White" Padding="10"
+                            Height="{TemplateBinding Height}"
+                            Width="{TemplateBinding Width}"
+                            Margin="100">
+                        <Border.Effect>
+                            <DropShadowEffect Color="{DynamicResource SystemAccentColor}"
+                                              OffsetX="0" OffsetY="0" BlurRadius="100" />
+                        </Border.Effect>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+                            <TextBlock FontWeight="200" Foreground="Black" HorizontalAlignment="Center" 
+                                       Text="{TemplateBinding Title}"/>
+                            <Separator Background="{DynamicResource SystemAccentColor}" Width="220" Margin="0,10"></Separator>
+                            <TextBlock FontWeight="200" Foreground="Black" FontSize="12"
+                                       Text="{TemplateBinding DescriptionContent}"
+                                       TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal" 
+                                        Margin="0,20,0,0"
+                                        HorizontalAlignment="Center"
+                                        Spacing="100">
+                                <Button Classes="topBar" x:Name="YesBtn">YES</Button>
+                                <Button Classes="topBar" x:Name="NoBtn">NO</Button>
+                            </StackPanel>
+                        </StackPanel>
+            
+                    </Border>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -86,7 +86,8 @@
                 <Border Background="{DynamicResource DarkGrey}">
                     <StackPanel >
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <CheckBox CornerRadius="0" HorizontalAlignment="Left" 
+                            <CheckBox x:Name="PART_CheckBox"
+                                      CornerRadius="0" HorizontalAlignment="Left" 
                                       Margin="10,0,0,0"
                                       IsChecked="{Binding IsCheck}"/>
                             <TextBox x:Name="PART_TextField"

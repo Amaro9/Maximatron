@@ -15,6 +15,7 @@
         <StyleInclude Source="/Controls/UserObject.axaml"></StyleInclude>
         <StyleInclude Source="/Controls/NotificationControl.axaml"></StyleInclude>
         <StyleInclude Source="/Styles/PageViewStyles.axaml"/>
+        <StyleInclude Source="/Controls/FullScreenPopup.axaml"/>
     </Application.Styles>
              
     <Application.Resources>

@@ -19,33 +19,37 @@
 			<Image Grid.Column="0" VerticalAlignment="Center" Source="/Assets/MaximatronLogo.ico" Width="18" Margin="12,0,12,0"></Image>
 			<TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource White}">MAXIMATRON</TextBlock>
 		</Grid>
-		
 		<Grid Grid.Row="1" ColumnDefinitions="300, *" Background="{DynamicResource DarkGrey}">
 
 			<!-- HIERARCHY -->
 			<controls:HierarchyControl Grid.Column="0" x:Name="hierarchyControl"/>
 			
 			<!-- VIEW -->
-			<Grid Grid.Column="1" Margin="0,10,0,0"
+			<Grid Grid.Column="1" 
+			      x:Name="View"
+			      Margin="0,10,0,0"
 			      RowDefinitions="100 *">
-				
 
 				<StackPanel Grid.Row="0" ZIndex="99" Background="{DynamicResource White}">
 					<!-- Top Barre -->
-					<Border BorderBrush="{DynamicResource SystemAccentColor}"
+					<Border Background="{DynamicResource White}"
+							BorderBrush="{DynamicResource SystemAccentColor}"
 					        BorderThickness="0,0,0,3"
 					        VerticalAlignment="Center"
 					        Margin="10" Padding="0,0,0,10">
 							<Grid ColumnDefinitions="*,2*"
 							      VerticalAlignment="Center">
-								
-								<TextBlock Grid.Column="0"
-								           VerticalAlignment="Center"
-								           Foreground="Black"
-								           FontSize="28"
-								           TextDecorations="underline"
-								           TextWrapping="Wrap"
-								           Text="{Binding DocName}"/>
+								<WrapPanel Grid.Column="0" Orientation="Horizontal"
+								           VerticalAlignment="Center">
+									<TextBlock FontSize="32" Foreground="Black" IsVisible="{Binding !IsSave}">*</TextBlock>
+									
+									<TextBlock VerticalAlignment="Center"
+									           Foreground="Black"
+									           FontSize="28"
+									           TextDecorations="underline"
+									           TextWrapping="Wrap"
+									           Text="{Binding DocName}"/>
+								</WrapPanel>
 		
 								<WrapPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
 								           Margin="0,0,40,0">
@@ -141,7 +145,6 @@
 								</WrapPanel>
 							</Grid>
 						</Border>
-					
 					<!-- Pannel avec tous les controls-->
 					<Border Margin="0,0,0,0"
 					        BorderThickness="2">
@@ -212,7 +215,9 @@
 				</StackPanel>
 				
 				<!-- User Page View -->
-				<Grid Grid.Row="1" ColumnDefinitions=".05*,*,.05*" Background="{DynamicResource White}">
+				<Grid Grid.Row="1"
+				      ColumnDefinitions=".05*,*,.05*"
+				      Background="{DynamicResource White}">
 					<ScrollViewer Grid.Column="1" Padding="0,0,50,0"
 					              VerticalAlignment="Stretch"
 					              VerticalScrollBarVisibility="Visible">
@@ -223,10 +228,10 @@
 					</ScrollViewer>
 				</Grid>
 				
+				
 				<StackPanel x:Name="NotificationPanel"
 				            VerticalAlignment="Bottom" 
 				            HorizontalAlignment="Right"
-				            Spacing="5"
 				            Margin="0,0,20,20" Grid.Row="1"/>
 			</Grid>
 		</Grid>

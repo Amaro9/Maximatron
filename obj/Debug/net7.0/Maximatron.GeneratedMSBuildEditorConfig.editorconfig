@@ -18,6 +18,9 @@ build_property.ProjectDir = E:\Projets\C#\Maximatron\Maximatron\
 [E:/Projets/C\#/Maximatron/Maximatron/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[E:/Projets/C\#/Maximatron/Maximatron/Controls/FullScreenPopup.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [E:/Projets/C\#/Maximatron/Maximatron/Controls/HierarchyControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 

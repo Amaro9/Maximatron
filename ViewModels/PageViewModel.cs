@@ -34,25 +34,18 @@ public partial class PageViewModel : ViewModelBase
     [ObservableProperty] public string currDir = "C:";
     [ObservableProperty] public string folderName = "no folder open";
 
-    private Panel? notificationPanel;
-    private Panel? userViewPanel;
-    private Panel? hierarchyPanel;
+    private Panel notificationPanel;
+    private Panel userViewPanel;
+    private Panel hierarchyPanel;
+    private PageView view;
     
-    public void Init(Panel? userView, Panel? notifPanel, Panel? hierarchyView)
+    public void Init(PageView _view, Panel userView, Panel notifPanel, Panel hierarchyView)
     {
-        // Check si on peut commencer a init
-        if (notifPanel == null || userView == null || hierarchyView == null)
-        {
-            init = false;
-            
-            Console.WriteLine($"[ERROR] : Init in PageViewModel.cs failed");
-            return;
-        }
-
         // Set les vars qui faut
         notificationPanel = notifPanel;
         userViewPanel = userView;
         hierarchyPanel = hierarchyView;
+        view = _view; 
 
         // Load the directory chosen by the user in the last session
         CurrDir = SavingService.ReadStringFromFile(FolderSavePATH);
@@ -120,7 +113,7 @@ public partial class PageViewModel : ViewModelBase
     {
         // TODO : check si la page est save avant de tout clear
 
-        if (!init || userViewPanel == null)
+        if (!init)
             return;
         
         // On clear la page de tous les element qu'elle contenait
@@ -140,16 +133,11 @@ public partial class PageViewModel : ViewModelBase
             return;
         
         IsSave = newSate;
-        if (!DocName.Contains("*"))
-            DocName += IsSave ? "" : "*"; // Si le doc est pas save alors on ajoute une * apres le nom du doc
     }
+
+
     public async Task UpdateCurrDir(bool quickUpdate=false)
     {
-        if (hierarchyPanel == null || userViewPanel == null)
-        {
-            return;
-        }
-
         if (!quickUpdate)
         {
             // Get the new directory
@@ -172,7 +160,6 @@ public partial class PageViewModel : ViewModelBase
                 FolderName = "> " + folders[i] + " > ...";
             }
         }
-
         
         // Destroy everything in the panel
         hierarchyPanel.Children.Clear();
@@ -181,7 +168,7 @@ public partial class PageViewModel : ViewModelBase
         // Loop in all found files (including random things like .png)
         foreach (string file in files)
         {
-            if (file.Contains(".txt")) // Check if file is in right extention
+            if (file.Contains(".txt") || file.Contains(".maximatron")) // Check if file is in right extension
             {
               
                 // Get the file name without the extension
@@ -212,18 +199,25 @@ public partial class PageViewModel : ViewModelBase
                         }
                     }
                     
-                    LastSavePath = await SavingService.Load(userViewPanel, true, file);
-                    SavingService.SaveStringToFile(PATH, LastSavePath);
-                    GetDocName();
-                    
-                    if (LastSavePath != string.Empty)
-                    {
-                        AddNewNotification("file load successfuly", "(" + DocName + ")", new NotificationBrushColor().Success);
-                        SetSaveState(true);
+                    // If the doc isn't save we do the popup things, otherwise we just load
+                    if (!IsSave)
+                    {            
+                        view.savePopup.Opacity = 1;
+                        view.savePopup.yesEvent = (o, eventArgs) =>
+                        {
+                            view.Button_QuickSave(o, null);
+                            LoadFile(file);
+                        };
+                        
+                        
+                        view.savePopup.NoEvent = (o, eventArgs) =>
+                        {
+                            LoadFile(file);         
+                        };
                     }
                     else
                     {
-                        AddNewNotification("loading Cancel", string.Empty, new NotificationBrushColor().Warning);
+                        LoadFile(file);
                     }
                 };
                     
@@ -245,6 +239,15 @@ public partial class PageViewModel : ViewModelBase
             }
             
         }
+    }
+    
+    async void LoadFile(string file)
+    {
+        LastSavePath = await SavingService.Load(userViewPanel, true, file);
+        SavingService.SaveStringToFile(PATH, LastSavePath);
+        GetDocName();
+        SetSaveState(true);
+        
     }
     
 }

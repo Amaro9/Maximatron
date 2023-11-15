@@ -10,6 +10,8 @@ namespace Maximatron.Controls;
 public class UserObject : ContentControl
 {
     public TextBox? partTextField;
+    public CheckBox? PartCheckBox;
+
     public EventHandler init;
     
     public static readonly StyledProperty<ContextMenu>? ContextMenuTestProperty = AvaloniaProperty.Register<UserInteractable, ContextMenu>(
@@ -31,6 +33,7 @@ public class UserObject : ContentControl
     {
         base.OnApplyTemplate(e);
         partTextField = e.NameScope.Find<TextBox>("PART_TextField");
+        PartCheckBox = e.NameScope.Find<CheckBox>("PART_CheckBox");
         
         // The textBox is set, we can call init to notify the pageView.cs 
         init.Invoke(null, EventArgs.Empty);

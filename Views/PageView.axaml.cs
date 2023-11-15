@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -16,18 +17,33 @@ public partial class PageView : Window
 {
     public PageViewModel model;
     public bool init;
+    
+
+    public FullScreenPopup savePopup;
+    
     public PageView()
     {
         InitializeComponent();
         DataContext = new PageViewModel();
         model = (PageViewModel)DataContext!;
         
-        model.Init(UserViewStackPanel, NotificationPanel, hierarchyControl.panel);
+        model.Init(this, UserViewStackPanel, NotificationPanel, hierarchyControl.panel);
         StartLoad();
-
+        
+        // Create Popup
+        savePopup = new FullScreenPopup()
+        {
+            Name = "ScreenPopup",
+            Title = "SAVING ?",
+            DescriptionContent = "Would you like to save this document ?",
+            ZIndex = 99,
+            VerticalAlignment = VerticalAlignment.Top,
+            [Grid.RowProperty] = 1,
+        };
+        View.Children.Add(savePopup);
+        
         FinishLoad();
     }
-
     public void FinishLoad()
     {
         // We are doing a timer of 1sec to let everything init properly
@@ -68,13 +84,13 @@ public partial class PageView : Window
         model.GetDocName();
         await model.UpdateCurrDir(true);
 
-        if (model.LastSavePath != string.Empty)
-        {
-            model.AddNewNotification("file saved successfully", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
-            model.SetSaveState(true);
-        }
+        if (!model.IsSave) 
+            return;
+        
+        model.AddNewNotification("file saved successfully", "(" + model.LastSavePath + ")", new NotificationBrushColor().Success);
+        model.SetSaveState(true);
     }
-    private async void Button_QuickSave(object? sender, RoutedEventArgs e)
+    public async void Button_QuickSave(object? sender, RoutedEventArgs e)
     {
         model.LastSavePath = await SavingService.Save(this, true, model.LastSavePath);
         SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
@@ -94,12 +110,39 @@ public partial class PageView : Window
     }
     private async void Button_Load(object? sender, RoutedEventArgs e)
     {
-        model.LastSavePath = await SavingService.Load(this);
-        SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
-        model.GetDocName();
-        
-        if (model.LastSavePath != string.Empty)
+        if (!model.IsSave)
         {
+            savePopup.Opacity = 1;
+            
+            savePopup.yesEvent = async (sender, args) =>
+            {
+                Button_QuickSave(savePopup, null);
+                await DoLoad();
+            } ;
+            
+            savePopup.NoEvent = async (sender, args) =>
+            {
+                await DoLoad();
+            } ;
+        }
+        else
+        {
+            await DoLoad();
+        }
+
+
+    }
+
+    async Task DoLoad()
+    {
+        string path = await SavingService.Load(this);
+
+        if (path != String.Empty)
+        {
+            model.LastSavePath = path;
+            SavingService.SaveStringToFile(PageViewModel.PATH, model.LastSavePath);
+            model.GetDocName();
+            
             model.AddNewNotification("file load successfully", "(" + model.DocName + ")", new NotificationBrushColor().Success);
             model.SetSaveState(true);
         }
@@ -108,6 +151,7 @@ public partial class PageView : Window
             model.AddNewNotification("loading Cancel", string.Empty, new NotificationBrushColor().Warning);
         }
     }
+    
     private async void Button_LoadFolder(object? sender, RoutedEventArgs e)
     {
         await model.UpdateCurrDir();
@@ -301,6 +345,14 @@ public partial class PageView : Window
             {
                 UnsavePage(userObject);
             };
+            
+            if (userObject.PartCheckBox == null)
+                return;
+            
+            userObject.PartCheckBox.IsCheckedChanged += (o, eventArgs) =>
+            {
+                UnsavePage(userObject);
+            };
         };
         
         // On return le userObject fini
@@ -340,10 +392,9 @@ public partial class PageView : Window
         
         // On recup et test le parent pour voir si c'est un panel
         Panel? panel = (Panel)userObject.Parent!;
-        if (panel == null)
-            return;
-        
         panel.Children.Remove(userObject);
+        
+        UnsavePage(panel);
     }
     
 
@@ -439,6 +490,7 @@ public partial class PageView : Window
         PageViewModel model = (PageViewModel)view.DataContext!; 
         model.SetSaveState(false);
     }
+
 
 
 }
